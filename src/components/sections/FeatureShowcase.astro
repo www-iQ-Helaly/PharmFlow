@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/paths';
 import Container from '../ui/Container.astro';
 import Icon from '../ui/Icon.astro';
 import StatusBadge from '../ui/StatusBadge.astro';
@@ -61,7 +62,7 @@ const imageSrc = imageMap[id] ?? '/screenshots/app/dashboard.png';
       <div class={flip ? 'lg:order-1' : ''}>
         <div class="mx-auto max-w-xs overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-xl">
           <img
-            src={imageSrc}
+            src={withBase(imageSrc)}
             alt={lang === 'ar' ? `${title} — لقطة حقيقية من تطبيق PharmFlow` : `${title} — real app screenshot`}
             class="h-auto w-full"
             loading="lazy"

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/paths';
 import Container from '../ui/Container.astro';
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
@@ -59,10 +60,10 @@ const t = getTranslations(lang);
     <div data-reveal class="relative mx-auto flex max-w-md items-end justify-center gap-4">
       <div class="absolute -bottom-4 left-1/2 -z-10 h-8 w-[calc(100%-2rem)] -translate-x-1/2 rounded-full bg-slate-200/70 blur-xl"></div>
       <div class="w-1/2 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-2xl shadow-slate-300/60">
-        <img src="/screenshots/app/dashboard.png" alt={t.hero.screenshotLabel} class="h-auto w-full" loading="eager" />
+        <img src={withBase('/screenshots/app/dashboard.png')} alt={t.hero.screenshotLabel} class="h-auto w-full" loading="eager" />
       </div>
       <div class="w-1/2 translate-y-6 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-2xl shadow-slate-300/60">
-        <img src="/screenshots/app/inventory-expiring.png" alt={t.hero.screenshotLabel} class="h-auto w-full" loading="eager" />
+        <img src={withBase('/screenshots/app/inventory-expiring.png')} alt={t.hero.screenshotLabel} class="h-auto w-full" loading="eager" />
       </div>
     </div>
   </Container>

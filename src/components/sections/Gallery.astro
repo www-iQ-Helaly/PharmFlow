@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../../lib/paths';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
 import Icon from '../ui/Icon.astro';
@@ -60,7 +61,7 @@ const images: Record<string, { src: string; label: string }> = {
         >
           <div class="mx-auto max-w-xs overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-lg">
             <img
-              src={images[tab.id]?.src}
+              src={withBase(images[tab.id]?.src ?? '')}
               alt={images[tab.id]?.label ?? t.gallery.screenshot(tab.label)}
               class="h-auto w-full"
               loading="lazy"
