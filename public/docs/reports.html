@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — التقارير والإعدادات</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav a { text-decoration: none; color: var(--text-secondary); padding: 8px 12px; background: var(--bg); border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .nav a:hover { background: var(--primary); color: white; }
+    .nav a.active { background: var(--primary-dark); color: white; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    section { margin-bottom: 28px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .feature-card { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); }
+    .feature-card h4 { color: var(--primary-dark); margin-bottom: 8px; }
+    .feature-card.green { background: #ecfdf5; border-color: #6ee7b7; }
+    .feature-card.good { background: #f0fdf4; border-color: #86efac; }
+    .report-preview { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); font-family: monospace; white-space: pre-wrap; }
+    .toggle-switch { display: flex; align-items: center; gap: 12px; margin: 8px 0; padding: 8px; background: var(--bg); border-radius: 6px; }
+    .toggle { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: all 0.2s; }
+    .toggle.on { background: var(--primary); }
+    .toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; right: 2px; transition: all 0.2s; }
+    .toggle.on .toggle-knob { left: 2px; }
+    .toggle-label { font-weight: 500; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 التقارير والإعدادات</h1>
+      <p>إدارة تقارير اليوم والإعدادات التشغيلية</p>
+    </header>
+    <nav class="nav">
+      <a href="../">🌐 الموقع الرئيسي</a>
+      <a href="index.html">🏠 البداية</a>
+      <a href="login.html">🔐 تسجيل الدخول</a>
+      <a href="pos.html">🛍️ شاشة البيع</a>
+      <a href="inventory.html">📦 المخزون</a>
+      <a href="returns.html">🔄 الإرجاع</a>
+      <a href="reports.html" class="active">📊 التقارير</a>
+    </nav>
+    <main>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;"><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/invoice-archive.png" alt="أرشيف الفواتير" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">أرشيف الفواتير</figcaption></figure><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/daily-report-settings.png" alt="إعدادات التقرير اليومي" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">إعدادات التقرير اليومي</figcaption></figure></div>
+      <a href="index.html" class="back-link">← العودة للقائمة الرئيسية</a>
+
+      <section id="reports-overview">
+        <h2>نظرة عامة</h2>
+        <p>تتوفر التقارير في نظام الصيدلية على ثلاثة مستويات رئيسية:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          <strong>تقارير يومية تلقائية:</strong> تُرسل كل يوم في الوقت الذي تحدده عبر البريد أو تيليغرام
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <strong>تقارير على الطلب:</strong> عند الحاجة، من خلال الأرشيف وشاشات الإدارة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <strong>لوحة التحكم:</strong> عرض مؤشرات سريعة عن حالة الصيدلية
+        </div>
+      </section>
+
+      <section id="invoice-archive">
+        <h2>أرشيف الفواتير</h2>
+        <p>أرشيف الفواتير يحتوي على كل الفواتير المكتملة في النظام. متاح للأدمن فقط (لأنه يحتوي على بيانات مبيعات مفصلة وحساسة).</p>
+
+        <h3>الوصول لأرشيف الفواتير</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اضغط أيقونة "أرشيف الفواتير" (📋 — متاح للأدمن فقط)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر قائمة بجميع الفواتير مرتبة حسب التاريخ (الأحدث أولاً)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          مرِّر للأسفل للوصول إلى الفواتير الأقدم
+        </div>
+
+        <h3>تفاصيل كل فاتورة في الأرشيف</h3>
+        <div class="feature-card">
+          <h4>📄 بطاقة الفاتورة تعرض:</h4>
+          <ul>
+            <li>رقم الفاتورة (INV-YYYY-NNNNNN)</li>
+            <li>تاريخ ووقت البيع</li>
+            <li>اسم المستخدم المنفذ</li>
+            <li>طريقة الدفع (نقدي، بطاقة، آجل)</li>
+            <li>إجمالي الفاتورة</li>
+            <li>الخصم (إن وجد)</li>
+            <li>طرق الدفع: نقدي / بطاقة / آجل</li>
+          </ul>
+        </div>
+
+        <h3>دخول تفاصيل الفاتورة</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط على أي فاتورة لرؤية التفاصيل الكاملة
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر لك:
+          <ul>
+            <li>رقم الفاتورة والتاريخ</li>
+            <li>طريقة الدفع مع شارة "غير مدفوع" إذا كانت آجل</li>
+            <li>قائمة جميع الأصناف مع السعر والكمية</li>
+            <li>خانة "الإجمالي" في الأسفل</li>
+            <li>زر "إرجاع" (للصيدلاني/الأدمن فقط)</li>
+            <li>زر "طباعة الإيصال" (لجميع الأدوار)</li>
+          </ul>
+        </div>
+
+        <div class="tip">
+          زر "طباعة الإيصال" متاح للجميع — لا قيد — الكاشير يمكنه طباعة إيصال الفاتورة للعميل.
+        </div>
+      </section>
+
+      <section id="auto-reports">
+        <h2>التقارير اليومية التلقائية</h2>
+        <p>يتضمن النظام محركاً لإرسال تقارير يومية تلقائياً إلى:</p>
+        <ul>
+          <li><strong>البريد الإلكتروني:</strong> إلى عنوان البريد المسجل للفرع</li>
+          <li><strong>تيليجرام:</strong> إلى محادثة أو قناة مخصصة</li>
+        </ul>
+
+        <h3>إعدادات إرسال التقرير</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اضغط أيقونة "إعدادات التقرير" (⏰ — أدمن فقط)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر شاشة الإعدادات التالية:
+        </div>
+
+        <div class="feature-card green">
+          <h4>⏰ وقت الإرسال اليومي</h4>
+          <div class="step" style="margin-top: 8px;">
+            <span class="step-number">1</span>
+            اختر الوقت الذي تريد استلام التقرير فيه (مثال: 8:00 صباحاً)
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            الوقت يأتي مُحوَّلاً إلى UTC داخلياً لتقارير متسقة عبر المناطق الزمنية
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            إذا لم يُضبَط وقت، التقرير لا يُرسل تلقائياً
+          </div>
+        </div>
+
+        <div class="feature-card green">
+          <h4>📧 قناة البريد الإلكتروني</h4>
+          <div class="toggle-switch">
+            <div class="toggle" id="toggle-email" onclick="this.classList.toggle('on')">
+              <div class="toggle-knob"></div>
+            </div>
+            <span class="toggle-label">تفعيل إرسال التقرير عبر البريد</span>
+          </div>
+          <div class="step" style="margin-top: 8px;">
+            <span class="step-number">1</span>
+            عند التفعيل، أدخل عنوان البريد الإلكتروني للفرع
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            يُحفظ هذا العنوان ضمن إعدادات الفرع
+          </div>
+          <div class="note-box" style="margin-top: 8px;">
+            البريد يجب أن يكون عنواناً صحيحاً — التقرير يكون ملف PDF مرفق.
+          </div>
+        </div>
+
+        <div class="feature-card green">
+          <h4>📱 قناة تيليجرام</h4>
+          <div class="toggle-switch">
+            <div class="toggle" id="toggle-tg" onclick="this.classList.toggle('on')">
+              <div class="toggle-knob"></div>
+            </div>
+            <span class="toggle-label">تفعيل إرسال التقرير عبر تيليجرام</span>
+          </div>
+          <div class="step" style="margin-top: 8px;">
+            <span class="step-number">1</span>
+            عند التفعيل، أدخل <strong>chat_id</strong> الخاص بالفرع
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            البوت المشترك (PharmFlow Bot) يرسل للـchat_id المحدد
+          </div>
+          <div class="note-box" style="margin-top: 8px;">
+            ليست هناك حاجة لتوكن — التوكن سري على السيرفر فقط. chat_id هو مفتاح التمييز بين الفروع.
+          </div>
+        </div>
+
+        <h3>حفظ الإعدادات</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط "حفظ" في الأسفل
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          الإعدادات تُحفظ محلياً وفي السحابة (إذا كان متصلاً)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          رسالة نجاح: "تم حفظ الإعدادات"
+        </div>
+
+        <div class="note-box">
+          الإعدادات محفوظة حتى لو لم يكن هناك اتصال — ولكن إرسال التقرير الفعلي يحتاج اتصال بالإنترنت.
+        </div>
+
+        <div class="danger-box">
+          <strong>ملاحظة هامة:</strong> التقرير اليومي لا يُرسل إلا إذا تم تعيين وقت الإرسال وتفعيل واحدة على الأقل من القناتين.
+        </div>
+      </section>
+
+      <section id="report-content">
+        <h2>ما يحتويه التقرير اليومي؟</h2>
+        <p>عندما يُرسل التقرير اليومي، يحتوي على ملخص للمبيعات اليوم. المثال التالي توضيحي للشكل العام فقط؛ الأرقام وأسماء المنتجات فيه غير حقيقية:</p>
+
+        <div class="report-preview" style="background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border); margin: 12px 0;">
+          ═════════════════════════════════════
+          PHARMACY DAILY REPORT
+          ═════════════════════════════════════
+          الصيدلية: [اسم الصيدلية]
+          التاريخ: 14 سبتمبر 2026
+          الفرع: [اسم الفرع]
+          ─────────────────────────────────────
+
+          📊 ملخص المبيعات:
+          ├─ إجمالي الفواتير: 47 فاتورة
+          ├─ إجمالي المبيعات: 12,450,000 د.ع
+          ├─ متوسط الفاتورة: 264,893 د.ع
+          ├─ أعلى فاتورة: 1,850,000 د.ع
+          ├─ الخصم اليومي: 320,000 د.ع
+          └─ المبيعات الصافية: 12,130,000 د.ع
+
+          💳 طرق الدفع:
+          ├─ نقدي: 32 فاتورة (68.1%)
+          ├─ بطاقة: 12 فاتورة (25.5%)
+          └─ آجل: 3 فواتير (6.4%)
+
+          📦 أفضل 5 منتجات:
+          1. باراسيتامول 500مغ — 89 وحدة
+          2. فيتامين د 400 وحدة — 67 وحدة
+          3. أموكسيسيلين 500مغ — 54 وحدة
+          4. إيبوبروفين 400مغ — 43 وحدة
+          5. اكتامول 650مغ — 38 وحدة
+
+          ⚠️ تحذيرات:
+          ├─ دفعات منتهية اليوم: 2
+          ├─ دفعات قرب انتهاء (≤7 أيام): 3
+          └─ منتجات منخفضة: 12
+
+          ─────────────────────────────────────
+          تم الإرسال: 8:00 صباحاً بالتوقيت المحلي
+          ═════════════════════════════════════
+        </div>
+
+        <h3>مكونات التقرير</h3>
+        <div class="feature-card green">
+          <h4>📈 الأقسام الأساسية:</h4>
+          <ul>
+            <li><strong>ملخص الفواتير:</strong> عدد الفواتير، إجمالي المبيعات، متوسط، أعلى فاتورة</li>
+            <li><strong>الخصومات:</strong> إجمالي الخصومات المقدمة للعملاء</li>
+            <li><strong>طرق الدفع:</strong> توزيع الفواتير حسب طريقة الدفع</li>
+            <li><strong>أفضل المنتجات:</strong> 5 منتجات الأكثر مبيعاً اليوم</li>
+            <li><strong>تحذيرات المخزون:</strong> دفعات منتهية، قريبة من الانتهاء، منخفضة</li>
+          </ul>
+        </div>
+
+        <div class="note-box">
+          التقرير ملف PDF جاهز — يمكنك طباعته أو وضعه في الأرشيف أو إرساله للمدير.
+        </div>
+      </section>
+
+      <section id="dashboard-overview">
+        <h2>لوحة التحكم الرئيسية</h2>
+        <p>لوحة التحكم (Home Dashboard) هي الشاشة التي تراها بعد تسجيل الدخول (للصيدلاني والأدمن). تقدم الوصول السريع لجميع الميزات عبر بطاقات.</p>
+
+        <h3>البطاقات المتاحة</h3>
+        <table style="width: 100%; border-collapse: collapse; margin: 16px 0; background: var(--bg);">
+          <tr style="border-bottom: 1px solid var(--border);">
+            <th style="padding: 10px; text-align: right; border: none;">البطاقة</th>
+            <th style="padding: 10px; text-align: center; border: none; width: 100px;">للصيدلاني</th>
+            <th style="padding: 10px; text-align: center; border: none; width: 100px;">للأدمن</th>
+            <th style="padding: 10px; text-align: right; border: none;">الوظيفة</th>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: none;">🛍️ بيع جديد</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">فتح شاشة نقطة البيع</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">📦 حالة المخزون</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">عرض المخزون (4 تبويبات)</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">🔍 بحث سريع</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">بحث نصي عن منتج</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">⏸️ فواتير معلقة</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">إدارة السلات المعلقة</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">📋 أرشيف الفواتير</td>
+            <td style="padding: 10px; border: none; text-align: center;">❌</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">مراجعة الفواتير السابقة</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">👥 المستخدمون</td>
+            <td style="padding: 10px; border: none; text-align: center;">❌</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">إدارة الموظفين</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">👪 الفريق</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">أجهزة ومستخدمين موحدين</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">⚖️ مطابقة المخزون</td>
+            <td style="padding: 10px; border: none; text-align: center;">❌</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">مقارنة المخزون المحلي والسحابي</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">⏰ إعدادات التقرير</td>
+            <td style="padding: 10px; border: none; text-align: center;">❌</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">إعداد التقرير اليومي</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">🔍 تشخيص النظام</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">حالة النظام والمزامنة</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">📱 جهاز جديد</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">إضافة جهاز جديد للفرع</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td style="padding: 10px; border: none;">📋 الإدخال الجماعي</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">تحليل فاتورة ضوئياً</td>
+          </tr>
+          <tr style="background: var(--bg);">
+            <td style="padding: 10px; border: none;">🏷️ ملصقات الباركود</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none; text-align: center;">✅</td>
+            <td style="padding: 10px; border: none;">توليد ملصقات باركود</td>
+          </tr>
+        </table>
+
+        <div class="note-box">
+          البطاقات متاحة حسب الدور تلقائياً — لا حاجة لإعدادات إضافية.
+        </div>
+      </section>
+
+      <section id="system-diagnostics">
+        <h2>تشخيص النظام (الدعم الفني)</h2>
+        <p>شاشة تشخيص النظام تساعد في فهم مشاكل النظام وإيصال معلومات دقيقة للدعم الفني:</p>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم أو من قائمة POS، اضغط "تشخيص النظام" (❤️‍🩺)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر لك معلومات:
+          <ul>
+            <li>حالة الاتصال (متصل/غير متصل)</li>
+            <li>وقت التشغيل الأخير للتطبيق</li>
+            <li>حجم قاعدة البيانات المحلية</li>
+            <li>عدد الفواتير، المنتجات، المستخدمين</li>
+            <li>حالة المزامنة (آخر مزامنة ناجحة)</li>
+            <li>الأجهزة المسجلة</li>
+            <li>حالة الترخيص</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          إذا كان هناك مشكلة، النظام يظهر رسائل تشخيصية محددة
+        </div>
+
+        <div class="tip">
+          هذه الشاشة مفيدة عندما تتواصل مع الدعم الفني — أرسل لهم صورة الشاشة أو بيانات التشخيص.
+        </div>
+      </section>
+
+      <section id="settings-placement">
+        <h2>إعدادات الصيدلية والأجهزة</h2>
+        <p>متاحة للأدمن فقط عبر لوحة التحكم:</p>
+
+        <h3>إعدادات الصيدلية الأساسية</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من أيقونة "إعدادات الصيدلية" (🛡️) في لوحة التحكم
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          يمكنك تعديل:
+          <ul>
+            <li>اسم الصيدلية، العنوان، رقم الهاتف</li>
+            <li>شعار الصيدلية (تحديث الصورة)</li>
+            <li>رقم ترخيص الصيدلية الرسمي</li>
+            <li>طابع جهاز الكاشير (POS-01, POS-02, إلخ)</li>
+          </ul>
+        </div>
+
+        <h3>إدارة المستخدمين</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم (أدمن فقط)، اضغط "المستخدمون"
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر لك:
+          <ul>
+            <li>قائمة كل المستخدمين (كاشير، صيدلاني، أدمن)</li>
+            <li>الصلاحيات لكل مستخدم</li>
+            <li>حالة كل مستخدم (فعال/مغلق)</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          لإنشاء مستخدم جديد: اضغط "إضافة مستخدم" واملأ:
+          <ul>
+            <li>الاسم الكامل</li>
+            <li>الدور (كاشير/صيدلاني/أدمن)</li>
+            <li>رمز PIN (4-6 أرقام)</li>
+            <li>حالة التفعيل</li>
+          </ul>
+        </div>
+
+        <div class="warning-box">
+          عند إنشاء مستخدم جديد، يكون PIN واضحاً للمرة الأولى فقط — يوصى بتغييره بعد أول تسجيل دخول.
+        </div>
+
+        <h3>إدارة الأجهزة</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم (أدمن فقط)، اضغط "إدارة الأجهزة"
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر الأجهزة المسجلة للفرع:
+          <ul>
+            <li>معرف الجهاز (device ID)</li>
+            <li>اسم الجهاز (إذا تم تحديده)</li>
+            <li>تاريخ التسجيل</li>
+            <li>حالة الجهاز (فعال/مقفل)</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          إضافة جهاز جديد: اضغط "إضافة جهاز" وامسح رمز الربط (QR)
+        </div>
+
+        <div class="danger-box">
+          يمكن للأدمن قفل جهاز عن بُعد — هذا يُبطِّل الجهاز من العمل فوراً. استخدم هذه الميزة لتأمين الأجهزة المفقودة.
+        </div>
+      </section>
+
+      <section id="tips">
+        <h2>نصائح لتقارير فعّالة</h2>
+        <ul>
+          <li><strong>حدد وقت التقرير:</strong> اختر وقتاً يتوافق مع عمليات الصيدلية (صباحاً قبل البدء مثلاً)</li>
+          <li><strong>فعّل القناتين:</strong> البريد للنسخة الرسمية، تيليجرام للمراجعة السريعة</li>
+          <li><strong>المراجعة الأسبوعية:</strong> دع الصيدلاني/الأدمن يراجع التقرير الأسبوعي لفهم أنماط المبيعات</li>
+          <li><strong>تحليل الإرجاعات:</strong> استخدم بيانات التقرير لفهم أسباب كثرة الإرجاعات</li>
+          <li><strong>مراقبة المخزون:</strong> التقرير يبقيك مطلعًا على المنتجات المنخفضة قبل نفادها</li>
+          <li><strong>نسخ احتياطي:</strong> حفظ تقارير PDF لسجل محاسبي طويل الأمد</li>
+        </ul>
+
+        <div class="tip" style="margin-top: 20px;">
+          <strong>الأدمن مسؤول عن:</strong> مراجعة التقرير يومياً وضمان استمرار تشغيل القنوات.
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+    </footer>
+  </div>
+  <script>
+    // Toggle animation enhancement
+    document.querySelectorAll('.toggle-switch .toggle').forEach(t => {
+      t.addEventListener('click', function() {
+        this.classList.toggle('on');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — نقطة البيع (POS)</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav a { text-decoration: none; color: var(--text-secondary); padding: 8px 12px; background: var(--bg); border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .nav a:hover { background: var(--primary); color: white; }
+    .nav a.active { background: var(--primary-dark); color: white; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    section { margin-bottom: 28px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .feature-card { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); }
+    .feature-card h4 { color: var(--primary-dark); margin-bottom: 8px; }
+    .shortcut { display: inline-block; background: var(--text); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-family: monospace; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🛒 نظام نقطة البيع (POS)</h1>
+      <p>دليل الكاشير والصيدلاني لعمليات البيع في الصيدلية</p>
+    </header>
+    <nav class="nav">
+      <a href="../">🌐 الموقع الرئيسي</a>
+      <a href="index.html">🏠 البداية</a>
+      <a href="login.html">🔐 تسجيل الدخول</a>
+      <a href="pos.html" class="active">🛍️ شاشة البيع</a>
+      <a href="inventory.html">📦 المخزون</a>
+      <a href="returns.html">🔄 الإرجاع</a>
+      <a href="reports.html">📊 التقارير</a>
+    </nav>
+    <main>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;"><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/pos-cart.png" alt="شاشة البيع: سلة بعدة أصناف" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">شاشة البيع: سلة بعدة أصناف</figcaption></figure><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/receipt-preview.png" alt="معاينة الإيصال بعد البيع" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">معاينة الإيصال بعد البيع</figcaption></figure></div>
+      <a href="index.html" class="back-link">← العودة للقائمة الرئيسية</a>
+
+      <section id="overview">
+        <h2>نظرة عامة على شاشة البيع</h2>
+        <p>شاشة البيع (POS) هي واجهة الكاشير الرئيسية في الصيدلية. في هذه الشاشة تقوم بـ:</p>
+        <ul>
+          <li>مسح باركود المنتجات أو البحث عنها</li>
+          <li>إضافة المنتجات للسلة</li>
+          <li>تعديل الكميات والأسعار</li>
+          <li>اختيار طريقة الدفع</li>
+          <li>إتمام البيع وطباعة الإيصال</li>
+        </ul>
+
+        <div class="feature-card">
+          <h4>↕️ العناصر الأساسية في الشاشة</h4>
+          <div class="step">
+            <span class="step-number">1</span>
+            <strong>منطقة الكاميرا العلوية:</strong> للمسح الضوئي للباركود. تتقلص تلقائياً عند ظهور لوحة المفاتيح.
+          </div>
+          <div class="step">
+            <span class="step-number">2</span>
+            <strong>قائمة السلة:</strong> تظهر المنتجات المضافة مع السعر والكمية. يمكنك تعديل كل صنف بزيادة/إنقاص الكمية أو حذفه.
+          </div>
+          <div class="step">
+            <span class="step-number">3</span>
+            <strong>شريط الإجماليات:</strong> يظهر المجموع النهائي (بعد الخصم إن وجد). يظهر "المجموع الفرعي" و"الخصم" فقط عند وجود خصم فعلي.
+          </div>
+          <div class="step">
+            <span class="step-number">4</span>
+            <strong>زر "إتمام البيع":</strong> هو الزر الأخير في الأسفل — يظهر فقط عندما السلة غير فارغة.
+          </div>
+          <div class="step">
+            <span class="step-number">5</span>
+            <strong>زر "إلغاء" في الأعلى:</strong> يمسح السلة بالكامل. يظهر فقط عندما السلة غير فارغة.
+          </div>
+        </div>
+      </section>
+
+      <section id="add-product">
+        <h2>إضافة منتج للسلة</h2>
+        <p>هناك ثلاث طرق لإضافة منتج:</p>
+
+        <h3>الطريقة الأولى: المسح بالكاميرا (السرعة)</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          افتح شاشة البيع (الكاميرا مفتوحة تلقائياً)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          ضع باركود العبوة بين إطار الكاميرا (داخل الخطوط الرمادية)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          عندما يقرأ النظام الباركود بنجاح، يظهر المنتج تلقائياً في السلة
+        </div>
+
+        <div class="tip">
+          <strong>نصيحة:</strong> الكاميرا تقرأ الباركود وتضيفه فوراً — لا حاجة لضغط أي زر. فقط أشر إلى الباركود.
+        </div>
+
+        <h3>الطريقة الثانية: البحث النصي</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط أيقونة البحث (🔍 في الأعلى) في شريط التطبيق
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اكتب اسم المنتج أو باركوده أو أي جزء من الاسم
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر المنتج من القائمة المعروضة
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          يُضاف المنتج للسلة فوراً
+        </div>
+
+        <div class="note-box">
+          البحث يعمل حتى للمنتجات بدون باركود — أي منتج مسجل في النظام يمكن إضافته بهذه الطريقة.
+        </div>
+
+        <h3>الطريقة الثالثة: الإدخال اليدوي للباركود</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر "إدخال الباركود يدوياً" (⌨️ أسفل الكاميرا)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اكتب أرقام الباركود (فقط أرقام، بدون مسافات)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط "تأكيد" — النظام يحاول إضافة المنتج
+        </div>
+
+        <div class="note-box">
+          مفيد عندما تكون العدسة متسخة أو الملصق تالف، أو عند البيع على جهاز بلا كاميرا.
+        </div>
+
+        <div class="danger-box" style="margin-top: 20px;">
+          <strong>تحذير:</strong> إذا ظهر رسالة "المنتج غير معروف" — هذا يعني أن الباركود غير مسجل في النظام. يجب إضافة المنتج أولاً من إدارة المخزون (للصيدلاني/الأدمن فقط).
+        </div>
+      </section>
+
+      <section id="modify-cart">
+        <h2>تعديل السلة</h2>
+
+        <h3>تغيير كمية منتج</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          في سطر المنتج في السلة، اضغط <strong>+</strong> لزيادة الكمية أو <strong>-</strong> لإنقاصها
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          عند الوصول للصفر، يُحذف السطر تلقائياً
+        </div>
+        <div class="note-box">
+          زر "-" عند كمية 1 يحذف السطر بالكامل.
+        </div>
+
+        <h3>حذف منتج من السلة</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر الحذف (🗑️) في نهاية سطر المنتج
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          يؤكد النظام — اضغط "تأكيد" للحذف
+        </div>
+        <div class="warning-box">
+          لا يمكن التراجع عن الحذف — المنتج يختفي من السلة فوراً.
+        </div>
+
+        <h3>تعديل سعر الوحدة (للصيدلاني والأدمن فقط)</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          في سطر المنتج، اضغط زر "تعديل السعر" (يظهر فقط للصيدلاني والأدمن)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اكتب السعر الجديد واضغط "حفظ"
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          يظهر سطر "السعر الأصلي" بجوار السعر المعدل
+        </div>
+
+        <div class="tip">
+          <strong>ملاحظة:</strong> تعديل السعر يظهر كشارة "معدّل" على السطر حتى نهاية الفاتورة. السعر الأصلي يظل مرئياً للتحقق.
+        </div>
+      </section>
+
+      <section id="discount">
+        <h2>الخصم على الفاتورة</h2>
+        <p>يمكنك تطبيق خصم يدوي على الفاتورة كاملة:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          اسحب شريط الخصم اليدوي (ظهر أسفل السلة عندما السلة غير فارغة)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اكتب المبلغ المطلوب خصمه (عدد صحيح، ولا توجد فاصلة عشرية)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط خارج الحقل أو اتركه — الخصم يطبق تلقائياً
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          شريط الإجماليات يظهر المجموع الفرعي والخصم والمجموع النهائي
+        </div>
+
+        <div class="warning-box">
+          الخصم اليدوي فقط (نسبة مئوية غير متاحة في الواجهة — النظام يدعمها خلف الكواليس لكن الواجهة تبقيه بسيطاً).
+        </div>
+
+        <div class="note-box">
+          الخصم يُمسح تلقائياً بعد إتمام البيع أو إلغاء السلة — لا يدوم بين عمليات البيع.
+        </div>
+      </section>
+
+      <section id="payment-methods">
+        <h2>اختيار طريقة الدفع</h2>
+        <p>قبل إتمام البيع، اختر طريقة الدفع من الخيارات الثلاثة (تظهر فقط عندما السلة غير فارغة):</p>
+
+        <div class="feature-card">
+          <h4>💵 نقدي (افتراضي)</h4>
+          <p>الخيار الافتراضي دائماً. إذا كان العميل سيدفع نقداً، لا حاجة لتغيير الخيار.</p>
+        </div>
+        <div class="feature-card">
+          <h4>💳 بطاقة</h4>
+          <p>اختر هذا الخيار عندما يدفع العميل ببطاقة مصرفية.</p>
+        </div>
+        <div class="feature-card">
+          <h4>📅 آجل / ائتمان</h4>
+          <p>للبيع على الحساب للعميل. يظهر شارة "غير مدفوع" على الفاتورة في الأرشيف.</p>
+          <p><strong>تنبيه:</strong> هذا الخيار يُستخدم للبيع الآجل — يتطلب وجود عميل مسجل (مرحلة مستقبلية).</p>
+        </div>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط على شريحة طريقة الدفع المطلوبة
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          الخيارات الثلاثة تظهر بجانب زر "إتمام البيع" مباشرة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          الخيار المختار يبقى محدداً — يمكنك تغييره قبل الإتمام
+        </div>
+
+        <div class="note-box">
+          طريقة الدفع تُمسح إلى "نقدي" تلقائياً بعد كل بيع ناجح — الافتراضي دائماً للعميل التالي.
+        </div>
+      </section>
+
+      <section id="complete-sale">
+        <h2>إتمام البيع</h2>
+        <p>هذه الخطوة النهائية تحفظ الفاتورة وتخصم المخزون:</p>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          تأكد أن السلة تحتوي على المنتجات المطلوبة والكميات صحيحة
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تأكد أن طريقة الدفع مختارة (نقدي افتراضياً)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط زر "إتمام البيع" الأخضر (في الأسفل)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          النظام ينفذ العملية:
+          <ul style="margin-top: 8px;">
+            <li>يُولّد رقم فاتورة تلقائياً (INV-السنة-التسلسل)</li>
+            <li>يحسب الإجمالي النهائي مع الخصم والضريبة</li>
+            <li>يطبّق FEFO لاختيار الدفعة المناسبة (الأقدم انتهاءً أولًا)</li>
+            <li>يتحقق من صلاحية الدفعة (ليست منتهية)</li>
+            <li>يطبق خصم المخزون من الدفعة الصحيحة</li>
+            <li>يسجل حركة مخزون سالبة</li>
+            <li>يُنشئ سجلاً في طابور المزامنة لإرساله لاحقاً</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          تظهر رسالة نجاح مع رقم الفاتورة
+        </div>
+
+        <div class="tip">
+          <strong>بعد النجاح:</strong> السلة تُمسح تلقائياً — جاهزة للعميل التالي. لا توجد شاشة تأكيد.
+        </div>
+
+        <h3>طباعة الإيصال</h3>
+        <p>بعد إتمام البيع بنجاح، يظهر زر "طباعة الإيصال" بالقرب من رسالة النجاح:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر الطباعة (🖨️) الذي يظهر بعد البيع بنجاح
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          يُفتح شاشة معاينة الإيصال
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط "مشاركة" أو "طباعة" لطباعة الإيصال أو حفظه كـ PDF
+        </div>
+
+        <div class="note-box">
+          زر الطباعة متاح لجميع الأدوار — الكاشير يمكنه طباعة الإيصال للعميل دون الحاجة للأدمن.
+        </div>
+      </section>
+
+      <section id="hold-cart">
+        <h2>تعليق السلة (للبائع التالي)</h2>
+        <p>عندما يحتاج البائع إلى استئناف البيع لزبون آخر مؤقتاً:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر "تعليق" (⏸️) بجانب زر الإلغاء في الأعلى
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          السلة تُخزن محلياً باسم "سلة معلقة" ولا تُمسح
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          السلة تُصبح فارغة — جاهزة للعميل الجديد
+        </div>
+
+        <p>للاستئناف لاحقاً:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          عند وجود سلات معلقة، تظهر أيقونة السلات المعلقة (⏸️) في شريط التطبيق
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اضغط الأيقونة لفتح قائمة السلات المعلقة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر السلة واضغط "استئناف" — ترجع إليك مع المنتجات الأصلية
+        </div>
+
+        <div class="warning-box">
+          السلات المعلقة لا تُزامن مع السحابة — هي محلية فقط على الجهاز.
+        </div>
+      </section>
+
+      <section id="cancel-cart">
+        <h2>إلغاء السلة بالكامل</h2>
+        <p>لإفساح المجال لعميل جديد بدون بيع:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر "إلغاء" (🗑️) في الأعلى بجانب التطبيق
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          السلة تُمسح فوراً بدون أي تأكيد — جاهزة للعميل التالي
+        </div>
+
+        <div class="tip">
+          <strong>لا توجد رسالة تأكيد:</strong> إلغاء السلة هو إجراء شائع — التأكيد سيضيف إزعاجاً غير ضروري.
+        </div>
+
+        <div class="danger-box">
+          لا يمكن التراجع عن إلغاء السلة — جميع المنتجات تختفي من السلة فوراً.
+        </div>
+      </section>
+
+      <section id="expiry-warning">
+        <h2>تنبيهات انتهاء الصلاحية أثناء البيع</h2>
+        <p>عند إضافة منتج للسلة، يتحقق النظام من حالة الدفعة:</p>
+
+        <div class="feature-card">
+          <h4>🟢 سليم — لا تحذير</h4>
+          <p>الدفعة ليست قريبة من الانتهاء — لا تظهر أي رسالة.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🟡 تحذير معتدل (≤90 يوم)</h4>
+          <p>شريط أصفر فاتح يظهر أسفل السطر. تنبيه معلوماتي فقط.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🟠 تحذير متوسط (≤60 يوم)</h4>
+          <p>شريط برتقالي واضح. الدفعة قريبة من الانتهاء.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🔴 تحذير عاجل (≤30 يوم)</h4>
+          <p>شريط أحمر قوي. الدفعة ستنتهي قريباً جداً.</p>
+        </div>
+        <div class="feature-card">
+          <h4>🛑 دفعات منتهية</h4>
+          <p>رسالة حمراء واضحة: "كل المخزون منتهٍ" — المنتج لا يمكن إضافته.</p>
+        </div>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          عند رؤية تحذير، يمكنك المتابعة أو اختيار منتج بديل
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          إذا كانت الدفعة منتهية — النظام يرفض الإضافة تلقائياً
+        </div>
+
+        <div class="danger-box">
+          <strong>تحذير هام:</strong> لا تبيع منتجاً منتهياً — النظام سيمنعك حتى لو حاولت إجبار الأمر عبر مسار آخر.
+        </div>
+      </section>
+
+      <section id="stock-warning">
+        <h2>تنبيهات المخزون أثناء البيع</h2>
+        <p>عند إضافة منتج، يتحقق النظام من المستوى المتاح:</p>
+
+        <div class="feature-card">
+          <h4>⚠️ مخزون منخفض</h4>
+          <p>عندما الكمية المتبقية أقل من حد معين. تحذير برتقالي.</p>
+          <p style="margin-top: 8px;"><strong>الإجراء:</strong> أبلغ الصيدلاني لإعادة التخزين. يمكنك الاستمرار في البيع إذا الكمية كافية للطلب الحالي.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>🚫 مخزون غير كافٍ</h4>
+          <p>عندما الكمية المطلوبة أكبر من المتاح. خطأ واضح.</p>
+          <p style="margin-top: 8px;"><strong>الإجراء:</strong> قلل الكمية أو أخبر العميل أن المنتج غير متوفر حالياً.</p>
+        </div>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          عند ظهور تحذير مخزون، جرِّب خفض الكمية أو إزالة السطر
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          للصيدلاني/الأدمن: اضغط "إضافة مخزون" لإعادة تعبئة الدفعة
+        </div>
+      </section>
+
+      <section id="quick-tips">
+        <h2>نصائح سريعة للكاشير</h2>
+        <ul>
+          <li><strong>السرعة:</strong> الكاميرا تضيف المنتج فور مسح الباركود — لا حاجة لضغط أي زر</li>
+          <li><strong>البحث البديل:</strong> إذا كانت الكاميرا بطيئة أو غير واضحة، استخدم زر البحث للنص</li>
+          <li><strong>الإدخال اليدوي:</strong> للمنتجات بدون باركود، استخدم لوحة المفاتيح الرقمية</li>
+          <li><strong>الخصم:</strong> إذا العميل يستحق خصماً، أدخله قبل إتمام البيع — يظهر الإجماليات بعد الخصم</li>
+          <li><strong>طريقة الدفع:</strong> "نقدي" هو الافتراضي — غيّره فقط إذا دفع العميل بطريقة أخرى</li>
+          <li><strong>تعليق السلة:</strong> للزبائن الذين سيعودون — لا تحذفها، علّقها</li>
+        </ul>
+
+        <div class="tip" style="margin-top: 20px;">
+          <strong>لا تتردد في الأخطاء:</strong> إذا أخطأت في إضافة منتج، احذفه وأعد المسح. السلة لن تسجل حتى إتمام البيع.
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+    </footer>
+  </div>
+</body>
+</html>

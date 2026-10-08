@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from './sections/Hero.astro';
+import BlackFridayBanner from './sections/BlackFridayBanner.astro';
+import TeamNetwork from './sections/TeamNetwork.astro';
+import ProductIntro from './sections/ProductIntro.astro';
+import InteractiveProductExplainer from './sections/InteractiveProductExplainer.astro';
+import Gallery from './sections/Gallery.astro';
+import VideoSection from './sections/VideoSection.astro';
+import FeatureShowcase from './sections/FeatureShowcase.astro';
+import WhatsNew from './sections/WhatsNew.astro';
+import Technology from './sections/Technology.astro';
+import CTA from './sections/CTA.astro';
+import { getTranslations, type Lang } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<Layout lang={lang}>
+  <BlackFridayBanner lang={lang} />
+  <TeamNetwork lang={lang} />
+  <Hero lang={lang} />
+  <ProductIntro lang={lang} />
+  <InteractiveProductExplainer lang={lang} />
+  <Gallery lang={lang} />
+  <VideoSection lang={lang} />
+
+  {t.showcase.items.map((item) => (
+    <FeatureShowcase
+      lang={lang}
+      id={item.id}
+      kicker={item.kicker}
+      title={item.title}
+      intro={item.intro}
+      bullets={item.bullets}
+      icon={item.icon}
+      flip={item.flip}
+    />
+  ))}
+
+  <WhatsNew lang={lang} />
+  <Technology lang={lang} />
+  <CTA lang={lang} />
+</Layout>

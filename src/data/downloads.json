@@ -1,0 +1,14 @@
+{
+  "android": {
+    "file": "/downloads/PharmFlow-0.7.0-Android.apk",
+    "size_mb": 99.9,
+    "sha256": "99203ad1cb32eae7f20fafe9526bd01c57196e009313848806e93df9644ad525",
+    "version": "0.7.0"
+  },
+  "windows": {
+    "file": "/downloads/PharmFlow-Setup-0.7.0-Windows.exe",
+    "size_mb": 39.9,
+    "sha256": "032bacc949445a416c7a939dda5a61fcd8df00f60266835c5870d97ca90fcd18",
+    "version": "0.7.0"
+  }
+}

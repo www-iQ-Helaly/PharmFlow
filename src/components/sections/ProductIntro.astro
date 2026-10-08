@@ -1,0 +1,39 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<section id="intro" class="scroll-mt-24 bg-white py-20 sm:py-24">
+  <Container>
+    <div data-reveal>
+      <SectionHeading
+        kicker={t.productIntro.kicker}
+        title={t.productIntro.title}
+        lead={t.productIntro.lead}
+      />
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-3" data-reveal>
+      {t.productIntro.audiences.map((audience) => (
+        <div class="rounded-2xl border border-slate-200 bg-slate-50/60 p-6 transition-shadow hover:shadow-md">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-100 text-primary-700">
+            <Icon name={audience.icon} class="h-6 w-6" />
+          </div>
+          <h3 class="mt-4 font-heading text-lg font-bold text-slate-900">{audience.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            {audience.text}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>

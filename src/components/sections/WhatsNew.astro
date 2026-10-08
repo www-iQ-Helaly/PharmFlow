@@ -1,0 +1,56 @@
+---
+import { getCollection } from 'astro:content';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ContentRequired from '../ui/ContentRequired.astro';
+import { getTranslations, languages, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const releases = (await getCollection('releases', (entry) => entry.id.startsWith(`${lang}/`)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+---
+
+<section id="whats-new" class="scroll-mt-24 bg-slate-50 py-20 sm:py-24">
+  <Container>
+    <div data-reveal>
+      <SectionHeading
+        kicker={t.whatsNew.kicker}
+        title={t.whatsNew.title}
+        lead={t.whatsNew.lead}
+      />
+    </div>
+
+    {releases.length > 0 ? (
+      <ul class="mt-14 grid gap-6 sm:grid-cols-3" data-reveal>
+        {releases.map((release) => (
+          <li class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between gap-2">
+              <span class="rounded-full bg-primary-100 px-3 py-1 font-mono text-sm font-bold text-primary-700" dir="ltr">
+                {release.data.version ?? t.whatsNew.versionFallback}
+              </span>
+              <time class="text-xs text-slate-400" datetime={release.data.date.toISOString()}>
+                {release.data.date.toLocaleDateString(languages[lang].localeDate, { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+            </div>
+            <h3 class="mt-4 font-heading text-lg font-bold text-slate-900">{release.data.title}</h3>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="mt-14" data-reveal>
+        <ContentRequired
+          lang={lang}
+          label={t.whatsNew.placeholderLabel}
+          note={t.whatsNew.placeholderNote}
+        />
+      </div>
+    )}
+
+  </Container>
+</section>

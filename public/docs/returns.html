@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — إرجاع الفواتير</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav a { text-decoration: none; color: var(--text-secondary); padding: 8px 12px; background: var(--bg); border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .nav a:hover { background: var(--primary); color: white; }
+    .nav a.active { background: var(--primary-dark); color: white; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    section { margin-bottom: 28px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .feature-card { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); }
+    .feature-card h4 { color: var(--primary-dark); margin-bottom: 8px; }
+    .feature-card.success { background: #ecfdf5; border-color: #6ee7b7; }
+    .feature-card.warning { background: #fefce8; border-color: #fde68a; }
+    .feature-card.danger { background: #fef2f2; border-color: #fca5a5; }
+    .return-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .return-table th, .return-table td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--border); }
+    .return-table th { background: var(--bg); font-weight: 600; color: var(--text-secondary); font-size: 0.9rem; }
+    .return-table td:last-child, .return-table th:last-child { text-align: center; }
+    .btn { padding: 10px 20px; border: none; border-radius: 8px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-outline { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #dc2626; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔄 إرجاع الفواتير</h1>
+      <p>كيفية معالجة الإرجاعات للعملاء بطريقة صحيحة وآمنة</p>
+    </header>
+    <nav class="nav">
+      <a href="../">🌐 الموقع الرئيسي</a>
+      <a href="index.html">🏠 البداية</a>
+      <a href="login.html">🔐 تسجيل الدخول</a>
+      <a href="pos.html">🛍️ شاشة البيع</a>
+      <a href="inventory.html">📦 المخزون</a>
+      <a href="returns.html" class="active">🔄 الإرجاع</a>
+      <a href="reports.html">📊 التقارير</a>
+    </nav>
+    <main>
+      <a href="index.html" class="back-link">← العودة للقائمة الرئيسية</a>
+
+      <section id="returns-overview">
+        <h2>نظرة عامة على الإرجاع</h2>
+        <p>الإرجاع هو عملية إعادة مبلغ (أو بعض) الفاتورة المكتملة إلى العميل. يمكن أن يكون إرجاعاً كاملاً أو جزئياً (بعض الأصناف فقط).</p>
+
+        <div class="feature-card warning">
+          <h4>🔐 من يمكنه معالجة الإرجاع؟</h4>
+          <p>الإرجاع متاح فقط لـ <strong>الصيدلاني والأدمن</strong>. الكاشير لا يمكنه إرجاع الفواتير — هذه قيود أمنية لحماية المبيعات.</p>
+        </div>
+
+        <div class="feature-card success">
+          <h4>✅ أنواع الإرجاع المتاحة:</h4>
+          <ul>
+            <li><strong>إرجاع كامل:</strong> جميع أصناف الفاتورة تُرجع</li>
+            <li><strong>إرجاع جزئي:</strong> بعض الأصناف فقط تُرجع (كميات محددة)</li>
+          </ul>
+        </div>
+
+        <div class="note-box">
+          يجب أن يكون المنتج موجوداً فعلياً في الفاتورة المطلوبة — لا يمكن إرجاع منتجات لم تُباع أصلاً.
+        </div>
+      </section>
+
+      <section id="return-process">
+        <h2>خطوات معالجة الإرجاع</h2>
+
+        <h3>الخطوة 1: البحث عن الفاتورة</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم أو من قائمة POS: اضغط أيقونة "إرجاع" (↩️)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          تظهر شاشة البحث عن فاتورة — اكتب رقم الفاتورة أو تاريخها
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر الفاتورة من القائمة المعروضة
+        </div>
+
+        <div class="note-box">
+          الفواتير المكتملة فقط يمكن إرجاعها — الفواتير الملغية (voided) لا يمكن إرجاعها.
+        </div>
+
+        <h3>الخطوة 2: اختيار الأصناف المراد إرجاعها</h3>
+        <p>بعد اختيار الفاتورة، تظهر لك شاشة تفاصيل الفاتورة بالأصناف:</p>
+
+        <table class="return-table">
+          <tr>
+            <th>المنتج</th>
+            <th>الكمية الأصلية</th>
+            <th>الكمية القابلة للإرجاع</th>
+            <th>سعر الوحدة</th>
+            <th>الإجراء</th>
+          </tr>
+          <tr>
+            <td>باراسيتامول 500مغ</td>
+            <td>2 علبة</td>
+            <td>2 علبة</td>
+            <td>25.000 د.ع</td>
+            <td>[اختيار الكمية]</td>
+          </tr>
+          <tr>
+            <td>اكتامول 650مغ</td>
+            <td>1 علبة</td>
+            <td>1 علبة</td>
+            <td>45.000 د.ع</td>
+            <td>[اختيار الكمية]</td>
+          </tr>
+          <tr>
+            <td>فيتامين د 400 وحدة</td>
+            <td>3 علب</td>
+            <td>2 علبة</td>
+            <td>80.000 د.ع</td>
+            <td>[اختيار الكمية]</td>
+          </tr>
+        </table>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          لكل صنف، يظهر لك حقل "الكمية المراد إرجاعها"
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          الافتراضي هو 0 (لا إرجاع لهذا الصنف)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اكتب الكمية التي تريد إرجاعها (لا يمكن أن تتجاوز الكمية الأصلية)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          يظهر لك "الكمية المتبقية القابلة للإرجاع" — هذه هي الحد الأقصى المسموح به
+        </div>
+
+        <div class="warning-box">
+          <strong>تنبيه:</strong> إذا أدخلت كمية أكبر من المتبقية، النظام سيظهر خطأ: "الكمية المطلوبة تتجاوز الحد المسموح."
+        </div>
+
+        <h3>الخطوة 3: سبب الإرجاع (اختياري)</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          في الأسفل، هناك حقل "سبب الإرجاع" (نص حر)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اكتب سبباً مناسبًا (مثال: "منتهي الصلاحية"، "عيب في العبوة"، "خطأ في الطلب")
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          هذا الحقل اختياري لكنه مفيد للتوثيق
+        </div>
+
+        <div class="tip">
+          كتابة سبب واضح يساعد في تحليل أسباب الإرجاع لاحقاً وتحسين جودة الخدمة.
+        </div>
+
+        <h3>الخطوة 4: التأكيد والناتج</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط زر "تأكيد الإرجاع" (أخضر) في الأسفل
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          النظام يتحقق من صحة الإرجاع:
+          <ul>
+            <li>معرّف الفاتورة صحيح؟</li>
+            <li>الكميات المطلوبة ≤ الكمية الأصلية للبيع؟</li>
+            <li>الكميات موجبة؟</li>
+            <li>الفاتورة ليست ملغية؟</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          إذا كانت صحيحة: يتم إرجاع الكميات للدفعة الأصلية (نفس دفعة البيع!)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          يتم إنشاء سجل إرجاع مع تاريخ، المستخدم، والسبب
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          يظهر رسالة نجاح: "تمت العملية بنجاح"
+        </div>
+        <div class="step">
+          <span class="step-number">6</span>
+          يعود النظام إلى الشاشة السابقة
+        </div>
+
+        <div class="success-box" style="background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0;">
+          <strong>✅ نتيجة النجاح:</strong> الكمية تعود للتخزين في نفس الدفعة الأصلية — هذا يحافظ على دقة المخزون واحتساب FEFO بشكل صحيح.
+        </div>
+      </section>
+
+      <section id="return-validation">
+        <h2>فحوصات النظام قبل الإرجاع</h2>
+        <p>قبل قبول أي إرجاع، النظام يقوم بالتحقق التلقائي التالي:</p>
+
+        <div class="feature-card success">
+          <h4>✅ فحوصات نجاح (عند تحققها، الإرجاع مسموح):</h4>
+          <ul>
+            <li>الفاتورة موجودة فعلاً في النظام</li>
+            <li>الفاتورة بحالة "مكتملة" (وليس ملغى)</li>
+            <li>الكمية المطلوبة لإرجاع أكبر من الصفر</li>
+            <li>الكمية المطلوبة لا تتجاوز الكمية المباعة الأصلية</li>
+            <li>خط الدفعة المستخدم في البيع الأصلي لا يزال موجوداً (ملاحظة: إذا الدفعة منتهية حالياً، لا يزال بالإمكان إرجاع المنتج منها لأن الدفعة كانت صالحة وقت البيع)</li>
+          </ul>
+        </div>
+
+        <div class="feature-card danger">
+          <h4>❌ فشل الإرجاع (إرجاع مرفوض):</h4>
+          <ul>
+            <li>رقم الفاتورة غير صحيح أو غير موجود</li>
+            <li>الفاتورة ملغية بالفعل</li>
+            <li>الكمية المطلوبة 0 أو سالبة</li>
+            <li>الكمية المطلوبة تتجاوز الكمية الأصلية</li>
+            <li>المستخدم غير مصرح له بالإرجاع (كاشير فقط مثلاً)</li>
+          </ul>
+        </div>
+
+        <div class="note-box">
+          لا يمنع النظام إرجاع منتج انتهت صلاحية دفعته بعد البيع، لأنه كان صالحاً وقت الشراء. تبقى الكمية المرتجعة ضمن الدفعة المنتهية ولا تُباع لأن النظام يمنع بيع الدفعات المنتهية.
+        </div>
+      </section>
+
+      <section id="view-returns">
+        <h2>عرض سجل الإرجاعات</h2>
+        <p>يمكنك مراجعة الإرجاعات السابقة:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اذهب لأرشيف الفواتير
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اضغط على فاتورة معينة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          في تفاصيل الفاتورة، يظهر لك "سجل الإرجاعات" إن وجد
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          كل إرجاع يظهر به: التاريخ، المستخدم، السبب، الكمية والسعر المُرجَع
+        </div>
+
+        <div class="tip">
+          هذه السجلات مُهمة للتدقيق المالي — احتفظ بها كمرجع.
+        </div>
+      </section>
+
+      <section id="return-impact">
+        <h2>أثر الإرجاع على المخزون والمبيعات</h2>
+
+        <h3>على المخزون</h3>
+        <div class="feature-card success">
+          <h4>🔄 إعادة المخزون:</h4>
+          <p>عند إرجاع منتج، الكمية تعود للتخزين في نفس الدفعة الأصلية للمنتج. هذا يحافظ على:</p>
+          <ul>
+            <li>دقة كميات الدفعات</li>
+            <li>صحة FEFO (أقدم دفعة أولاً)</li>
+            <li>عدم فقدان المخزون في حالات الإرجاع</li>
+          </ul>
+        </div>
+
+        <div class="note-box">
+          إذا كانت الدفعة الأصلية منتهية الآن — النظام لا يمنع الإرجاع بناءً على ذلك، لأن المنتج كان صالحاً للبيع وقت الشراء. يُضاف الإرجاع إلى الدفعة رغم انتهائها، ولا تُباع الكمية المرتجعة لأن الدفعة المنتهية محظورة من البيع.
+        </div>
+
+        <h3>على الفاتورة الأصلية</h3>
+        <div class="warning-box">
+          الفاتورة الأصلية لا تُعدّل — تظل بنفس الرقم والمبلغ الأصلي. الإرجاع يُسجَّل كعملية منفصلة مرتبطة بالفاتورة.
+        </div>
+
+        <h3>على التقارير</h3>
+        <p>الإرجاعات تظهر في تقارير المبيعات كـ "خصم مبيعات" — لتعكس المبيعات الصافية الحقيقية.</p>
+
+        <div class="note-box">
+          هذا مهم للأدمن والمحاسبة — المبيعات الصافية = المبيعات الإجمالية - المبيعات المرتجعة.
+        </div>
+
+        <div class="tip">
+          <strong>نصيحة محاسبية:</strong> عند إغلاق اليوم أو الشهر، راجع "إجمالي القيمة المُرجَعة" لتفهم أسباب الإرجاع وتحسين العمليات.
+        </div>
+      </section>
+
+      <section id="common-scenarios">
+        <h2>سيناريوهات الإرجاع الشائعة</h2>
+
+        <div class="feature-card">
+          <h4>📌 سيناريو 1: عميل أعاد منتجاً منتهياً</h4>
+          <p>العميل يقدم منتجاً منتهي الصلاحية (تاريخ انتهاء مضت).</p>
+          <p><strong>الإجراء:</strong></p>
+          <ul>
+            <li>تحقق من تاريخ الانتهاء على العبوة</li>
+            <li>إذا كانت الدفعة الأصلية منتهية — لا يمكن لـ FEFO أن يختارها للبيع، ولكن النظام لا يزال يقبل الإرجاع لأن المنتج كان صالحاً للبيع وقت الشراء</li>
+            <li>سجّل السبب كـ "منتهي الصلاحية"</li>
+            <li>قم بفصل الدفعات المنتهية للمنتجات وتدبيرها وفق بروتوكولات التخلص</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h4>📌 سيناريو 2: خطأ في البيع — كاشير بيع كمية كبيرة</h4>
+          <p>الكاشير بيع كمية أكبر مما كان ينبغي (مثلاً بيع 10 بدلاً من 5).</p>
+          <p><strong>الإجراء:</strong></p>
+          <ul>
+            <li>ابحث عن الفاتورة الأصلية</li>
+            <li>أوجد الصنف الخطأ</li>
+            <li>أدخل الكمية الزائدة فقط (5 قطع).</li>
+            <li>السبب: "خطأ في الكمية"</li>
+            <li>الكمية الزائدة تعود للدفعة</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h4>📌 سيناريو 3: عميل غير راضٍ عن المنتج</h4>
+          <p>العميل لا يريد المنتج (سبب شخصي، غير مريح، إلخ).</p>
+          <p><strong>الإجراء:</strong></p>
+          <ul>
+            <li>تحقق من وجود الفاتورة الأصلية</li>
+            <li>أدخل كل الكمية المطلوبة</li>
+            <li>السبب: "غير راضٍ عن المنتج"</li>
+            <li>الكمية تعود للدفعة</li>
+            <li>قدم استرداد المال إذا لزم</li>
+          </ul>
+        </div>
+
+        <div class="feature-card">
+          <h4>📌 سيناريو 4: منتج معيب / تالف</h4>
+          <p>العميل يعيد منتجاً بسبب عيب في العبوة أو محتوى.</p>
+          <p><strong>الإجراء:</strong></p>
+          <ul>
+            <li>تحقق من العبوة وتلفها</li>
+            <li>سجّل الكمية المعيبة</li>
+            <li>السبب: "منتج معيب/تالف"</li>
+            <li>أبلغ المورد إذا كان المنتج مستورَداً حديثاً</li>
+            <li>افصل المنتج المعيب فعلياً عن رفوف البيع ولا تُعده للبيع</li>
+          </ul>
+        </div>
+
+        <div class="danger-box">
+          <strong>⚠️ ملاحظة هامة:</strong> إذا كان المنتج معدوماً أو مُسمّمًا، لا تعيده للتخزين — افصله في منطقة منفصلة واتصل بالمورد فوراً.
+        </div>
+      </section>
+
+      <section id="return-tips">
+        <h2>نصائح لمعالجة الإرجاع الآمن</h2>
+        <ul>
+          <li><strong>تحقق من الفاتورة:</strong> تأكد من أن الفاتورة بالفعل ملك للعميل الذي يطلب الإرجاع</li>
+          <li><strong>تحقق من الكمية:</strong> لا تسمح بإرجاع كمية أكبر من المباعة</li>
+          <li><strong>وثّق السبب:</strong> اكتب سبباً واضحاً ومفيداً للتحليل المستقبلي</li>
+          <li><strong>راجع الدفعة:</strong> إذا الدفعة منتهية، استشر الصيدلاني حول كيفية التعامل</li>
+          <li><strong>احتفظ بالسجل:</strong> يجب الاحتفاظ بسجل الإرجاعات لتقارير دقيقة</li>
+          <li><strong>قم بفصل المنتجات التالفة:</strong> إذا كان المنتج معدوماً لا تعيده للتخزين</li>
+        </ul>
+
+        <div class="tip" style="margin-top: 20px;">
+          <strong>تذكير:</strong> الإرجاع ليس "إلغاء بيع" — هو إجراء منفصل يُسجَّل ويؤثر على المخزون والمبيعات.
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+---
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import StatusBadge from '../ui/StatusBadge.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+import type { IconName } from '../../lib/icons';
+
+interface Props {
+  lang: Lang;
+  id: string;
+  kicker: string;
+  title: string;
+  intro: string;
+  bullets: string[];
+  icon: IconName;
+  flip?: boolean;
+}
+
+const { lang, id, kicker, title, intro, bullets, icon, flip = false } = Astro.props;
+const t = getTranslations(lang);
+
+const imageMap: Record<string, string> = {
+  offline: '/screenshots/app/dashboard.png',
+  pos: '/screenshots/app/pos-cart.png',
+  inventory: '/screenshots/app/inventory-all.png',
+  barcode: '/screenshots/app/barcode-labels.png',
+  transactions: '/screenshots/app/invoice-detail.png',
+  security: '/screenshots/app/pin-setup.png',
+};
+
+const imageSrc = imageMap[id] ?? '/screenshots/app/dashboard.png';
+---
+
+<section id={id} class="scroll-mt-24 bg-white py-20 sm:py-24">
+  <Container>
+    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16" data-reveal>
+      <div class={flip ? 'lg:order-2' : ''}>
+        <p class="text-sm font-bold text-primary-600">{kicker}</p>
+        <div class="mt-3 flex items-center gap-3">
+          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-100 text-primary-700">
+            <Icon name={icon} class="h-6 w-6" />
+          </span>
+          <h2 class="font-heading text-3xl font-extrabold text-slate-900">{title}</h2>
+        </div>
+        <p class="mt-4 leading-relaxed text-slate-600">{intro}</p>
+
+        <ul class="mt-6 space-y-3">
+          {bullets.map((bullet) => (
+            <li class="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-3 text-sm">
+              <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-green-600" />
+              <span class="text-slate-700">{bullet}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-6">
+          <StatusBadge status="current" lang={lang} />
+        </div>
+      </div>
+
+      <div class={flip ? 'lg:order-1' : ''}>
+        <div class="mx-auto max-w-xs overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-xl">
+          <img
+            src={imageSrc}
+            alt={lang === 'ar' ? `${title} — لقطة حقيقية من تطبيق PharmFlow` : `${title} — real app screenshot`}
+            class="h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

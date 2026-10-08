@@ -1,0 +1,26 @@
+---
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+export type FeatureStatus = 'completed' | 'current' | 'planned' | 'roadmap' | 'unknown';
+
+interface Props {
+  status?: FeatureStatus;
+  lang?: Lang;
+}
+
+const { status = 'unknown', lang = 'ar' } = Astro.props;
+const t = getTranslations(lang);
+
+const classes: Record<FeatureStatus, string> = {
+  completed: 'bg-green-100 text-green-700',
+  current: 'bg-teal-100 text-primary-700',
+  planned: 'bg-amber-100 text-amber-700',
+  roadmap: 'bg-slate-200 text-slate-600',
+  unknown: 'border border-dashed border-slate-300 bg-slate-50 text-slate-500',
+};
+---
+
+<span class={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${classes[status]}`}>
+  {t.status[status]}
+  {status === 'unknown' && <span dir="ltr" class="font-mono text-[10px] opacity-70">CONTENT_REQUIRED</span>}
+</span>

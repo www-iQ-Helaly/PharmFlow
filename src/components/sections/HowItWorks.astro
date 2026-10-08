@@ -1,0 +1,69 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+const steps = [
+  {
+    order: 1,
+    title: 'إعداد الجهاز الأول',
+    body: 'تثبيت التطبيق على جهاز Android. عند التشغيل الأول، يدخل المستخدم مفتاح الترخيص (Ed25519) وفك تشفير قاعدة البيانات المحلية (SQLCipher) لتفعيل العمل.',
+    highlight: 'أمان الترخيص والمفتاح من البداية.',
+  },
+  {
+    order: 2,
+    title: 'إدارة منتجات المكتبة',
+    body: 'إضافة المنتجات يدويًا أو استيرادها من ملف (CSV/Excel). يمكن ربط كل منتج بدفعات متعددة برقم دفعة وتاريخ انتهاء — الأساس لعمل FEFO ومتابعة المخزون.',
+    highlight: 'منتجات ودفعات وFEFO من البداية.',
+  },
+  {
+    order: 3,
+    title: 'مسح الباركود أو البحث اليدوي',
+    body: 'الكاشير يضيف منتجًا للعربة إما بمسح الباركود بالكاميرا (GS1 DataMatrix، EAN-13، UPC) أو بالبحث اليدوي بالـ GTIN. إذا لم يكن المنتج معروفًا، يظهر خيار إضافته.',
+    highlight: 'مسح سريع بدون أجهزة منفصلة.',
+  },
+  {
+    order: 4,
+    title: 'الفاتورة والدفع',
+    body: 'عند الانتهاء، يُنشئ النظام فاتورة مبيعات كاملة (سطور، أسعار، خصومات، ضريبة، الدفعة المختارة تلقائيًا بـ FEFO). يُحدَّث المخزون ضد الدفعة، ويُحمى الإرجاع بفحص صارم.',
+    highlight: 'فاتورة موثقة وتحديث مخزون دقيق.',
+  },
+];
+---
+
+<section id="how-it-works" class="scroll-mt-24 bg-white py-20 sm:py-24">
+  <Container>
+    <div data-reveal>
+      <SectionHeading
+        kicker={t.howItWorks.kicker}
+        title={t.howItWorks.title}
+        lead={t.howItWorks.lead}
+      />
+    </div>
+
+    <ol class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+      {steps.map((step) => (
+        <li class="relative rounded-2xl border border-slate-200 bg-slate-50/60 p-6 transition-all hover:shadow-md">
+          <span class="flex h-11 w-11 items-center justify-center rounded-full bg-primary-600 font-heading text-lg font-bold text-white">
+            {step.order}
+          </span>
+          <h3 class="mt-4 font-heading text-lg font-bold text-slate-900">{step.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">{step.body}</p>
+          <div class="mt-4 flex items-center gap-2 text-xs font-medium text-primary-600">
+            <svg class="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 13a3 3 0 100-6 3 3 0 000 6zm1-3a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 001.415-1.415L10 8.586l-2.828 2.829a1 1 0 00-1.415 1.415l2.828-2.829A1 1 0 0011 10z" />
+            </svg>
+            {step.highlight}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </Container>
+</section>

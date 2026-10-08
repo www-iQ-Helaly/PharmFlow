@@ -1,0 +1,85 @@
+---
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import contact from '../../data/contact.json';
+import { promo, whatsappLink } from '../../data/promo';
+import type { Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const p = promo[lang];
+const waHref = whatsappLink(contact.whatsappUrl, p.whatsappText);
+---
+
+<section id="offer" class="bf relative overflow-clip bg-slate-950 text-white" aria-labelledby="bf-title">
+  <div aria-hidden="true" class="bf-grid pointer-events-none absolute inset-0"></div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-amber-400/20 blur-[7rem]"
+  >
+  </div>
+
+  <Container class="relative py-10 sm:py-14">
+    <div class="grid items-center gap-8 lg:grid-cols-[1.25fr_1fr]">
+      <div class="text-center lg:text-start">
+        <p
+          class="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-300/10 px-3.5 py-1.5 text-sm font-bold text-amber-200"
+        >
+          <Icon name="tag" class="h-4 w-4" />
+          {p.badge}
+        </p>
+        <h2 id="bf-title" class="mt-4 font-heading text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
+          {p.title}
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate-300 lg:mx-0">{p.lead}</p>
+        <p class="mt-4 inline-flex items-center gap-2 text-sm text-slate-400">
+          <Icon name="building" class="h-4 w-4 text-primary-300" />
+          {p.companyLine}
+        </p>
+      </div>
+
+      <div class="bf-card relative mx-auto w-full max-w-sm rounded-3xl p-6 text-center sm:p-7">
+        <span dir="ltr" class="bf-discount absolute -top-4 end-6 rounded-full px-3 py-1 text-sm font-extrabold">{p.discount}</span>
+        <p class="flex items-baseline justify-center gap-3" dir="ltr">
+          <span class="text-2xl font-bold text-slate-500 line-through decoration-rose-400/80 decoration-2">{p.oldPrice}</span>
+          <span class="font-heading text-6xl font-extrabold text-white">{p.newPrice}</span>
+        </p>
+        <p class="mt-2 text-sm font-semibold text-amber-200">{p.saveLabel}</p>
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener"
+          class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-base font-bold text-slate-950 shadow-lg shadow-emerald-500/30 transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+        >
+          <Icon name="message-circle" class="h-5 w-5" />
+          {p.cta}
+        </a>
+        <p class="mt-3 text-xs text-slate-400">{p.ctaHint}</p>
+        <p class="mt-1 text-xs text-slate-500" dir="ltr">{contact.phoneDisplay}</p>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .bf-grid {
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 20%, #000 30%, transparent 75%);
+  }
+  .bf-card {
+    background: linear-gradient(160deg, rgba(251, 191, 36, 0.16), rgba(15, 23, 42, 0.95) 55%);
+    border: 1px solid rgba(251, 191, 36, 0.45);
+    box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.8), 0 30px 80px -24px rgba(251, 191, 36, 0.45);
+  }
+  .bf-discount {
+    background: #fbbf24;
+    color: #1c1917;
+    box-shadow: 0 0 24px rgba(251, 191, 36, 0.6);
+  }
+</style>

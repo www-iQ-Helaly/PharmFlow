@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import '@fontsource/tajawal/400.css';
+import '@fontsource/tajawal/500.css';
+import '@fontsource/tajawal/700.css';
+import '@fontsource/cairo/700.css';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import { getTranslations, languages, type Lang } from '../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  description?: string;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const langMeta = languages[lang];
+const siteTitle = Astro.props.title ?? t.meta.title;
+const siteDescription = Astro.props.description ?? t.meta.description;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang={langMeta.htmlLang} dir={langMeta.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d9488" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={siteDescription} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" href={`${base}favicon.ico`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={siteDescription} />
+    <meta property="og:locale" content={langMeta.ogLocale} />
+  </head>
+  <body class="flex min-h-screen flex-col bg-slate-50 font-sans text-slate-900 antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:right-4 focus:z-50 focus:rounded-lg focus:bg-primary-600 focus:px-4 focus:py-2 focus:text-white"
+      >{t.layout.skipToContent}</a
+    >
+    <Header lang={lang} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script is:inline>
+      (function () {
+        var doc = document;
+        doc.documentElement.classList.add('js');
+
+        var header = doc.querySelector('header[data-header]');
+        if (header) {
+          var onScroll = function () {
+            header.classList.toggle('is-scrolled', window.scrollY > 8);
+          };
+          onScroll();
+          window.addEventListener('scroll', onScroll, { passive: true });
+        }
+
+        var els = doc.querySelectorAll('[data-reveal]');
+        if (!els.length) return;
+        var reveal = function (el) {
+          el.classList.add('is-visible');
+        };
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          els.forEach(reveal);
+          return;
+        }
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  reveal(entry.target);
+                  io.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.15 },
+          );
+          els.forEach(function (el) {
+            io.observe(el);
+          });
+        } else {
+          els.forEach(reveal);
+        }
+      })();
+    </script>
+  </body>
+</html>

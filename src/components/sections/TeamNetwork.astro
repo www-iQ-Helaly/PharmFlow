@@ -1,0 +1,815 @@
+---
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import { teamNetwork } from '../../data/team-network';
+import { languages, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = teamNetwork[lang];
+const locale = languages[lang].localeDate;
+
+// The script reads everything it needs from this one JSON blob, so the
+// animation logic stays language-agnostic.
+const runtime = {
+  locale,
+  staff: c.staff,
+  status: c.status,
+  packets: c.packets,
+  feed: c.feed,
+  products: c.products,
+  steps: c.steps,
+  controls: c.controls,
+  details: c.details,
+  feedEmpty: c.admin.feedEmpty,
+};
+---
+
+<section
+  id="network"
+  class="nw relative scroll-mt-24 overflow-clip bg-slate-950 py-20 text-white sm:py-24"
+  aria-labelledby="nw-title"
+>
+  <div aria-hidden="true" class="nw-grid pointer-events-none absolute inset-0"></div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute left-1/2 top-[30%] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-primary-500/20 blur-[9rem]"
+  >
+  </div>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute -bottom-40 left-[10%] h-[24rem] w-[24rem] rounded-full bg-accent-500/10 blur-[8rem]"
+  >
+  </div>
+
+  <Container class="relative">
+    <div class="mx-auto max-w-3xl text-center" data-reveal>
+      <p
+        class="inline-flex items-center gap-2 rounded-full border border-primary-400/30 bg-primary-400/10 px-3.5 py-1.5 text-sm font-medium text-primary-200"
+      >
+        <span class="nw-live-dot h-2 w-2 rounded-full bg-primary-400"></span>
+        {c.kicker}
+      </p>
+      <h2 id="nw-title" class="mt-5 font-heading text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl">
+        {c.title}
+      </h2>
+      <p class="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">{c.lead}</p>
+    </div>
+
+    <!-- Stage: nodes are plain HTML (crisp text at any width); the links and
+         packets are drawn by the script from the nodes' real positions. -->
+    <div class="nw-stage relative mx-auto mt-14 max-w-5xl" data-nw-stage>
+      <svg class="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible" data-nw-lines aria-hidden="true"
+      ></svg>
+
+      <div class="relative z-10 flex flex-col items-center gap-14 sm:gap-20">
+        <!-- Admin device -->
+        <button type="button" class="nw-node nw-admin is-selected" data-nw-node="admin" aria-pressed="true">
+          <span class="nw-phone-notch" aria-hidden="true"></span>
+          <span class="flex items-center justify-between gap-2">
+            <span class="flex items-center gap-2">
+              <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-500/20 text-primary-300">
+                <Icon name="shield" class="h-4 w-4" />
+              </span>
+              <span class="text-start">
+                <span class="block text-sm font-bold leading-tight">{c.admin.title}</span>
+                <span class="block text-[11px] text-slate-400">{c.admin.sub}</span>
+              </span>
+            </span>
+            <span class="nw-license-chip">
+              <Icon name="key" class="h-3.5 w-3.5" />
+              {c.admin.licenseChip}
+            </span>
+          </span>
+
+          <span class="mt-4 grid grid-cols-2 gap-2 text-start sm:grid-cols-3">
+            <span class="nw-stat col-span-2 sm:col-span-1">
+              <span class="nw-stat-label">{c.admin.salesLabel}</span>
+              <span class="nw-stat-value" data-nw-total>0</span>
+            </span>
+            <span class="nw-stat">
+              <span class="nw-stat-label">{c.admin.invoicesLabel}</span>
+              <span class="nw-stat-value" data-nw-invoices>0</span>
+            </span>
+            <span class="nw-stat">
+              <span class="nw-stat-label">{c.admin.onlineLabel}</span>
+              <span class="nw-stat-value"><span data-nw-online>0</span>/{c.staff.length}</span>
+            </span>
+          </span>
+
+          <span class="mt-4 block text-start">
+            <span class="block text-[11px] font-semibold uppercase tracking-wide text-slate-400">{c.admin.perDevice}</span>
+            {c.staff.map((s) => (
+              <span class="mt-2 flex items-center gap-2 text-[11px]">
+                <span class={`nw-dot nw-tone-${s.id}`} aria-hidden="true"></span>
+                <span class="w-24 shrink-0 truncate text-slate-300">{s.name}</span>
+                <span class="nw-track">
+                  <span class={`nw-fill nw-tone-${s.id}`} data-nw-bar={s.id}></span>
+                </span>
+                <span class="w-14 shrink-0 text-end tabular-nums text-slate-300" data-nw-amt={s.id}>0</span>
+              </span>
+            ))}
+          </span>
+
+          <span class="mt-4 block text-start">
+            <span class="block text-[11px] font-semibold uppercase tracking-wide text-slate-400">{c.admin.feedTitle}</span>
+            <span class="nw-feed mt-2 block" data-nw-feed>
+              <span class="nw-feed-empty">{c.admin.feedEmpty}</span>
+            </span>
+          </span>
+        </button>
+
+        <!-- Cloud hub -->
+        <button type="button" class="nw-node nw-hub" data-nw-node="hub" aria-pressed="false">
+          <span class="nw-hub-ring" aria-hidden="true"></span>
+          <span class="nw-hub-ring nw-hub-ring--late" aria-hidden="true"></span>
+          <span class="nw-hub-core">
+            <Icon name="cloud" class="h-7 w-7" />
+          </span>
+          <span class="mt-3 block text-sm font-bold">{c.hub.title}</span>
+          <span class="block max-w-[14rem] text-[11px] text-slate-400">{c.hub.sub}</span>
+        </button>
+
+        <!-- Team devices -->
+        <div class="grid w-full grid-cols-3 gap-2 sm:gap-6 lg:gap-10">
+          {c.staff.map((s) => (
+            <button
+              type="button"
+              class={`nw-node nw-staff nw-staff--${s.kind} is-waiting`}
+              data-nw-node={s.id}
+              aria-pressed="false"
+            >
+              <span class="nw-screen">
+                <span class="flex items-center justify-between gap-1">
+                  <span class={`nw-role nw-tone-${s.id}`}>{s.role}</span>
+                  <span class="nw-net" data-nw-net aria-hidden="true">
+                    <Icon name={s.kind === 'desktop' ? 'monitor' : 'smartphone'} class="h-3.5 w-3.5" />
+                  </span>
+                </span>
+                <span class="mt-2 block text-start text-[12px] font-bold leading-tight sm:text-sm">{s.name}</span>
+                <span class="nw-status mt-1 block text-start" data-nw-status>{c.status.waiting}</span>
+                <span class="nw-activity mt-2 block truncate text-start" data-nw-activity>&nbsp;</span>
+                <span class="nw-queue" data-nw-queue hidden></span>
+              </span>
+              {s.kind === 'desktop' && <span class="nw-stand" aria-hidden="true"></span>}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="pointer-events-none absolute inset-0 z-20" data-nw-packets aria-hidden="true"></div>
+    </div>
+
+    <!-- Caption + controls -->
+    <div class="mx-auto mt-10 flex max-w-3xl flex-col items-center gap-4 text-center">
+      <p class="nw-caption min-h-[3.25rem] text-base font-medium text-slate-100 sm:text-lg" data-nw-caption aria-live="polite">
+        {c.steps.still}
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-2" data-nw-controls>
+        <button type="button" class="nw-ctl" data-nw-toggle>
+          <span data-nw-icon-pause><Icon name="pause" class="h-4 w-4" /></span>
+          <span class="hidden" data-nw-icon-play><Icon name="play" class="h-4 w-4" /></span>
+          <span data-nw-toggle-label>{c.controls.pause}</span>
+        </button>
+        <button type="button" class="nw-ctl" data-nw-replay>
+          <Icon name="rotate-ccw" class="h-4 w-4" />
+          {c.controls.replay}
+        </button>
+      </div>
+      <p class="text-xs text-slate-500">{c.controls.tapHint} · {c.controls.demoNote}</p>
+    </div>
+
+    <!-- Detail of the selected device -->
+    <div class="nw-detail mx-auto mt-8 max-w-3xl" data-nw-detail aria-live="polite">
+      <h3 class="font-heading text-lg font-bold text-white" data-nw-detail-title>{c.details.admin.title}</h3>
+      <p class="mt-1 text-sm text-slate-300" data-nw-detail-body>{c.details.admin.body}</p>
+      <ul class="mt-3 grid gap-2 sm:grid-cols-2" data-nw-detail-items>
+        {c.details.admin.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <!-- Legend -->
+    <div class="mt-12 grid gap-4 sm:grid-cols-3" data-reveal>
+      {c.legend.map((l) => (
+        <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-500/15 text-primary-300">
+            <Icon name={l.icon} class="h-5 w-5" />
+          </span>
+          <h3 class="mt-3 font-heading text-base font-bold">{l.title}</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-400">{l.text}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+
+  <script is:inline type="application/json" data-nw-runtime set:html={JSON.stringify(runtime)} />
+</section>
+
+<style is:global>
+  .nw-grid {
+    background-image:
+      linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 75%);
+  }
+  .nw-live-dot { animation: nw-blink 1.6s ease-in-out infinite; }
+  @keyframes nw-blink { 50% { opacity: 0.25; } }
+
+  .nw-node {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, opacity 0.4s ease;
+  }
+  .nw-node:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 4px; }
+
+  /* Admin phone */
+  .nw-admin {
+    width: min(22rem, 100%);
+    border-radius: 2rem;
+    border: 1px solid rgba(94, 234, 212, 0.35);
+    background: linear-gradient(160deg, rgba(15, 118, 110, 0.35), rgba(15, 23, 42, 0.95) 45%);
+    padding: 1.6rem 1.1rem 1.1rem;
+    box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.9), 0 0 0 7px rgba(148, 163, 184, 0.25), 0 30px 80px -20px rgba(20, 184, 166, 0.45);
+  }
+  .nw-phone-notch {
+    position: absolute; top: 0.55rem; left: 50%; transform: translateX(-50%);
+    width: 4.5rem; height: 0.35rem; border-radius: 999px; background: rgba(148, 163, 184, 0.35);
+  }
+  .nw-license-chip {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    border-radius: 999px; padding: 0.2rem 0.6rem; font-size: 11px; font-weight: 700;
+    color: #fde68a; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.25);
+  }
+  .nw-stat { display: block; border-radius: 0.8rem; background: rgba(255, 255, 255, 0.05); padding: 0.5rem 0.6rem; }
+  .nw-stat-label { display: block; font-size: 10px; color: rgb(148 163 184); }
+  .nw-stat-value { display: block; margin-top: 0.1rem; font-size: 1.05rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .nw-stat-value.is-bump { animation: nw-bump 0.5s ease; }
+  @keyframes nw-bump { 40% { color: var(--color-primary-300); transform: scale(1.08); } }
+
+  .nw-track { position: relative; height: 0.4rem; flex: 1; border-radius: 999px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+  .nw-fill { position: absolute; inset-block: 0; inset-inline-start: 0; width: 0; border-radius: 999px; transition: width 0.7s cubic-bezier(.2,.8,.2,1); }
+  .nw-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; flex-shrink: 0; }
+
+  .nw-tone-pharmacist { --tone: #a78bfa; background: #a78bfa; }
+  .nw-tone-cashier { --tone: #fbbf24; background: #fbbf24; }
+  .nw-tone-desk { --tone: #38bdf8; background: #38bdf8; }
+
+  .nw-feed { min-height: 4.6rem; }
+  .nw-feed-empty { font-size: 11px; color: rgb(100 116 139); }
+  .nw-feed-item {
+    display: flex; align-items: center; gap: 0.45rem; font-size: 11px; padding: 0.22rem 0;
+    border-bottom: 1px dashed rgba(148, 163, 184, 0.15); animation: nw-slide 0.45s ease;
+  }
+  .nw-feed-item b { margin-inline-start: auto; font-variant-numeric: tabular-nums; }
+  .nw-feed-item .is-neg { color: #fda4af; }
+  @keyframes nw-slide { from { opacity: 0; transform: translateY(-6px); } }
+
+  /* Cloud hub */
+  .nw-hub { display: flex; flex-direction: column; align-items: center; padding: 0.25rem 0.75rem; }
+  .nw-hub-core {
+    position: relative; z-index: 1;
+    display: flex; height: 4.25rem; width: 4.25rem; align-items: center; justify-content: center;
+    border-radius: 999px; color: #ecfeff;
+    background: radial-gradient(circle at 30% 30%, var(--color-accent-400), var(--color-primary-700));
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.45);
+  }
+  .nw-hub-ring {
+    position: absolute; top: 0.25rem; left: 50%; height: 4.25rem; width: 4.25rem; margin-left: -2.125rem;
+    border-radius: 999px; border: 1px solid rgba(34, 211, 238, 0.6); animation: nw-ring 2.8s ease-out infinite;
+  }
+  .nw-hub-ring--late { animation-delay: 1.4s; }
+  @keyframes nw-ring { to { transform: scale(2.1); opacity: 0; } }
+  .nw-hub.is-hit .nw-hub-core { animation: nw-hit 0.5s ease; }
+  @keyframes nw-hit { 40% { transform: scale(1.12); box-shadow: 0 0 60px rgba(34, 211, 238, 0.8); } }
+
+  /* Team devices */
+  .nw-staff { width: 100%; max-width: 13rem; justify-self: center; }
+  .nw-screen {
+    position: relative; display: block; border-radius: 1.1rem; padding: 0.7rem 0.65rem 0.75rem;
+    background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(148, 163, 184, 0.25);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .nw-staff--phone .nw-screen { border-radius: 1.4rem; padding-top: 1rem; }
+  .nw-staff--phone .nw-screen::before {
+    content: ''; position: absolute; top: 0.4rem; left: 50%; transform: translateX(-50%);
+    width: 2rem; height: 0.22rem; border-radius: 999px; background: rgba(148, 163, 184, 0.35);
+  }
+  .nw-staff--desktop .nw-screen { border-radius: 0.7rem; border-bottom-width: 6px; }
+  .nw-stand {
+    display: block; margin: 0 auto; width: 34%; height: 0.55rem;
+    background: linear-gradient(rgba(148, 163, 184, 0.35), rgba(148, 163, 184, 0.15));
+    clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%);
+  }
+  .nw-role {
+    display: inline-block; border-radius: 999px; padding: 0.1rem 0.5rem; font-size: 10px; font-weight: 800;
+    color: #0f172a;
+  }
+  .nw-net { color: rgb(148 163 184); }
+  .nw-status { font-size: 10.5px; color: rgb(148 163 184); }
+  .nw-activity { font-size: 10.5px; color: rgb(203 213 225); min-height: 1rem; }
+  .nw-queue {
+    position: absolute; top: -0.55rem; inset-inline-end: -0.4rem;
+    border-radius: 999px; padding: 0.1rem 0.45rem; font-size: 10px; font-weight: 800;
+    background: #f59e0b; color: #0f172a; box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
+  }
+
+  .nw-staff.is-waiting { opacity: 0.45; }
+  .nw-staff.is-linked .nw-screen { border-color: color-mix(in srgb, var(--tone, #5eead4) 55%, transparent); }
+  .nw-staff.is-linked .nw-status { color: var(--color-primary-300); }
+  .nw-staff.is-offline .nw-screen { border-color: rgba(245, 158, 11, 0.7); }
+  .nw-staff.is-offline .nw-status, .nw-staff.is-offline .nw-net { color: #fbbf24; }
+  .nw-staff.is-pop { animation: nw-pop 0.55s ease; }
+  .nw-admin.is-pop { animation: nw-glow 0.6s ease; }
+  @keyframes nw-glow {
+    40% { box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.9), 0 0 0 7px rgba(94, 234, 212, 0.7), 0 30px 90px -10px rgba(20, 184, 166, 0.8); }
+  }
+  @keyframes nw-pop { 40% { transform: translateY(-6px) scale(1.04); } }
+  .nw-staff.is-busy .nw-screen { box-shadow: 0 0 0 1px var(--tone), 0 0 28px -4px var(--tone); }
+  .nw-staff[data-nw-node='pharmacist'] { --tone: #a78bfa; }
+  .nw-staff[data-nw-node='cashier'] { --tone: #fbbf24; }
+  .nw-staff[data-nw-node='desk'] { --tone: #38bdf8; }
+
+  .nw-node.is-selected.nw-staff .nw-screen,
+  .nw-node.is-selected.nw-hub .nw-hub-core { outline: 2px solid rgba(94, 234, 212, 0.8); outline-offset: 4px; }
+  .nw-admin.is-selected { border-color: rgba(94, 234, 212, 0.8); }
+
+  /* Links */
+  .nw-link { fill: none; stroke: rgba(148, 163, 184, 0.18); stroke-width: 1.5; transition: stroke 0.4s ease; }
+  .nw-link.is-active { stroke: rgba(45, 212, 191, 0.5); stroke-dasharray: 6 8; animation: nw-flow 1.2s linear infinite; }
+  .nw-link.is-down { stroke: rgba(245, 158, 11, 0.45); stroke-dasharray: 2 8; animation: none; }
+  .nw-link.is-selected { stroke: rgba(94, 234, 212, 0.95); stroke-width: 2.25; }
+  @keyframes nw-flow { to { stroke-dashoffset: -28; } }
+
+  /* Packets */
+  .nw-packet {
+    position: absolute; top: 0; left: 0; will-change: transform;
+    display: inline-flex; align-items: center; gap: 0.3rem; white-space: nowrap;
+    border-radius: 999px; padding: 0.2rem 0.55rem; font-size: 11px; font-weight: 800; color: #0f172a;
+    background: var(--tone, #5eead4); box-shadow: 0 0 18px var(--tone, #5eead4);
+  }
+  .nw-packet--join { --tone: #fde68a; }
+  .nw-packet--ret { --tone: #fda4af; }
+  .nw-packet--stock { --tone: #86efac; }
+
+  /* Controls + detail */
+  .nw-ctl {
+    display: inline-flex; align-items: center; gap: 0.45rem; border-radius: 999px; padding: 0.5rem 1rem;
+    font-size: 0.875rem; font-weight: 600; color: rgb(226 232 240);
+    border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .nw-ctl:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(94, 234, 212, 0.5); }
+  .nw-ctl:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 3px; }
+  .nw-detail {
+    border-radius: 1.25rem; border: 1px solid rgba(94, 234, 212, 0.25);
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.1), rgba(255, 255, 255, 0.03)); padding: 1.25rem 1.4rem;
+  }
+  .nw-detail li { position: relative; padding-inline-start: 1.1rem; font-size: 0.875rem; color: rgb(203 213 225); }
+  .nw-detail li::before {
+    content: ''; position: absolute; inset-inline-start: 0; top: 0.55em; width: 0.45rem; height: 0.45rem;
+    border-radius: 999px; background: var(--color-primary-400);
+  }
+
+  @media (max-width: 639px) {
+    .nw-admin { padding: 1.3rem 0.85rem 0.9rem; }
+    .nw-screen { padding: 0.75rem 0.4rem 0.55rem; }
+    .nw-role { font-size: 9px; padding: 0.05rem 0.35rem; }
+    .nw-packet { font-size: 9.5px; padding: 0.12rem 0.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nw-live-dot, .nw-hub-ring, .nw-link.is-active { animation: none; }
+    .nw-hub-ring { display: none; }
+  }
+</style>
+
+<script>
+  type StaffId = 'pharmacist' | 'cashier' | 'desk';
+  type NodeId = 'admin' | 'hub' | StaffId;
+  type Kind = 'sale' | 'ret' | 'stock';
+
+  interface Runtime {
+    locale: string;
+    staff: { id: StaffId; kind: string; role: string; name: string }[];
+    status: { waiting: string; linked: string; offline: string; queued: string };
+    packets: Record<'join' | Kind, string>;
+    feed: { sale: string; ret: string; stock: string; from: string };
+    products: { name: string; price: number }[];
+    steps: { join: string; live: string; offline: string; back: string; still: string };
+    controls: { pause: string; play: string };
+    details: Record<NodeId, { title: string; body: string; items: string[] }>;
+    feedEmpty: string;
+  }
+
+  function init(section: HTMLElement) {
+    const rt: Runtime = JSON.parse(section.querySelector('[data-nw-runtime]')!.textContent || '{}');
+    const stage = section.querySelector<HTMLElement>('[data-nw-stage]')!;
+    const svg = section.querySelector<SVGSVGElement>('[data-nw-lines]')!;
+    const packetLayer = section.querySelector<HTMLElement>('[data-nw-packets]')!;
+    const caption = section.querySelector<HTMLElement>('[data-nw-caption]')!;
+    const node = (id: NodeId) => section.querySelector<HTMLElement>(`[data-nw-node="${id}"]`)!;
+    const staffIds = rt.staff.map((s) => s.id);
+    const fmt = new Intl.NumberFormat(rt.locale);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // ---------- geometry ----------
+    type Pt = { x: number; y: number };
+    function anchor(id: NodeId, side: 'top' | 'bottom'): Pt {
+      const r = node(id).getBoundingClientRect();
+      const s = stage.getBoundingClientRect();
+      // Phones: aim at the screen, not the stand under the desktop.
+      const target = id === 'desk' ? node(id).querySelector('.nw-screen')!.getBoundingClientRect() : r;
+      return {
+        x: target.left - s.left + target.width / 2,
+        y: (side === 'top' ? target.top : target.bottom) - s.top + (id === 'hub' && side === 'top' ? 4 : 0),
+      };
+    }
+    // Every link runs bottom-up: from the lower node's top to the upper node's bottom.
+    const links: Record<string, [NodeId, NodeId]> = {
+      hub: ['hub', 'admin'],
+      pharmacist: ['pharmacist', 'hub'],
+      cashier: ['cashier', 'hub'],
+      desk: ['desk', 'hub'],
+    };
+    function curve(key: string) {
+      const [lo, hi] = links[key];
+      const a = anchor(lo, 'top');
+      const d = anchor(hi, 'bottom');
+      const my = (a.y + d.y) / 2;
+      return [a, { x: a.x, y: my }, { x: d.x, y: my }, d] as const;
+    }
+    function at(key: string, t: number): Pt {
+      const [p0, p1, p2, p3] = curve(key);
+      const u = 1 - t;
+      return {
+        x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
+        y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y,
+      };
+    }
+    const paths: Record<string, SVGPathElement> = {};
+    for (const key of Object.keys(links)) {
+      const p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      p.setAttribute('class', 'nw-link');
+      svg.appendChild(p);
+      paths[key] = p;
+    }
+    function drawLinks() {
+      for (const key of Object.keys(links)) {
+        const [a, b, c, d] = curve(key);
+        paths[key].setAttribute('d', `M${a.x},${a.y} C${b.x},${b.y} ${c.x},${c.y} ${d.x},${d.y}`);
+      }
+    }
+    new ResizeObserver(drawLinks).observe(stage);
+    drawLinks();
+
+    // ---------- run control ----------
+    let run = 0;
+    let userPaused = false;
+    let inView = false;
+    const paused = () => userPaused || !inView || document.hidden;
+
+    // Sleeps count only unpaused time, so pausing freezes the whole story.
+    function sleep(ms: number, id: number) {
+      return new Promise<boolean>((resolve) => {
+        let left = ms;
+        let last = performance.now();
+        const tick = (now: number) => {
+          if (id !== run) return resolve(false);
+          if (!paused()) left -= now - last;
+          last = now;
+          if (left <= 0) return resolve(true);
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    }
+
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    // Moves a packet along a chain of links. `forward` = bottom-up.
+    function fly(label: string, cls: string, route: { key: string; up: boolean }[], ms: number, id: number) {
+      const el = document.createElement('span');
+      el.className = `nw-packet ${cls}`;
+      el.textContent = label;
+      packetLayer.appendChild(el);
+      return new Promise<boolean>((resolve) => {
+        let elapsed = 0;
+        let last = performance.now();
+        const per = ms / route.length;
+        const frame = (now: number) => {
+          if (id !== run) {
+            el.remove();
+            return resolve(false);
+          }
+          if (!paused()) elapsed += now - last;
+          last = now;
+          const leg = Math.min(route.length - 1, Math.floor(elapsed / per));
+          const local = Math.min(1, (elapsed - leg * per) / per);
+          const t = ease(local);
+          const { key, up } = route[leg];
+          const p = at(key, up ? t : 1 - t);
+          el.style.transform = `translate(${p.x}px, ${p.y}px) translate(-50%, -50%)`;
+          if (elapsed >= ms) {
+            el.remove();
+            return resolve(true);
+          }
+          requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
+      });
+    }
+
+    // ---------- state ----------
+    const totals: Record<StaffId, number> = { pharmacist: 0, cashier: 0, desk: 0 };
+    let total = 0;
+    let invoices = 0;
+    let online = 0;
+    const queue: { kind: Kind; amount: number; product: string }[] = [];
+
+    const q = <T extends Element>(sel: string) => section.querySelector<T>(sel)!;
+    function bump(el: Element) {
+      el.classList.remove('is-bump');
+      void (el as HTMLElement).offsetWidth;
+      el.classList.add('is-bump');
+    }
+    function renderAdmin() {
+      const tEl = q<HTMLElement>('[data-nw-total]');
+      tEl.textContent = fmt.format(total);
+      q<HTMLElement>('[data-nw-invoices]').textContent = fmt.format(invoices);
+      q<HTMLElement>('[data-nw-online]').textContent = fmt.format(online);
+      const max = Math.max(1, ...staffIds.map((s) => totals[s]));
+      for (const s of staffIds) {
+        q<HTMLElement>(`[data-nw-bar="${s}"]`).style.width = `${(Math.max(0, totals[s]) / max) * 100}%`;
+        q<HTMLElement>(`[data-nw-amt="${s}"]`).textContent = fmt.format(totals[s]);
+      }
+    }
+    function pushFeed(kind: Kind, staff: StaffId, amount: number, product: string) {
+      const feed = q<HTMLElement>('[data-nw-feed]');
+      feed.querySelector('.nw-feed-empty')?.remove();
+      const name = rt.staff.find((s) => s.id === staff)!.name;
+      const row = document.createElement('span');
+      row.className = 'nw-feed-item';
+      const dot = document.createElement('span');
+      dot.className = `nw-dot nw-tone-${staff}`;
+      const text = document.createElement('span');
+      text.className = 'truncate text-slate-300';
+      text.textContent = `${rt.feed[kind]} · ${product} ${rt.feed.from} ${name}`;
+      const val = document.createElement('b');
+      if (kind !== 'stock') {
+        val.textContent = (amount < 0 ? '−' : '+') + fmt.format(Math.abs(amount));
+        if (amount < 0) val.classList.add('is-neg');
+      }
+      row.append(dot, text, val);
+      feed.prepend(row);
+      while (feed.children.length > 3) feed.lastElementChild!.remove();
+    }
+    function setStaff(id: StaffId, state: 'waiting' | 'linked' | 'offline') {
+      const el = node(id);
+      el.classList.remove('is-waiting', 'is-linked', 'is-offline');
+      el.classList.add(`is-${state}`);
+      el.querySelector('[data-nw-status]')!.textContent = rt.status[state];
+      paths[id].classList.toggle('is-active', state === 'linked');
+      paths[id].classList.toggle('is-down', state === 'offline');
+    }
+    function setActivity(id: StaffId, text: string) {
+      node(id).querySelector('[data-nw-activity]')!.textContent = text || ' ';
+    }
+    function setQueue(n: number) {
+      const badge = node('desk').querySelector<HTMLElement>('[data-nw-queue]')!;
+      badge.hidden = n === 0;
+      badge.textContent = `${fmt.format(n)} ${rt.status.queued}`;
+    }
+    function pop(id: NodeId) {
+      const el = node(id);
+      el.classList.remove('is-pop', 'is-hit');
+      void el.offsetWidth;
+      el.classList.add(id === 'hub' ? 'is-hit' : 'is-pop');
+    }
+
+    function reset() {
+      total = 0;
+      invoices = 0;
+      online = 0;
+      queue.length = 0;
+      for (const s of staffIds) {
+        totals[s] = 0;
+        setStaff(s, 'waiting');
+        setActivity(s, '');
+        node(s).classList.remove('is-busy');
+      }
+      paths.hub.classList.remove('is-active');
+      setQueue(0);
+      packetLayer.replaceChildren();
+      const empty = document.createElement('span');
+      empty.className = 'nw-feed-empty';
+      empty.textContent = rt.feedEmpty;
+      q<HTMLElement>('[data-nw-feed]').replaceChildren(empty);
+      renderAdmin();
+    }
+
+    const pick = <T,>(xs: T[]) => xs[Math.floor(Math.random() * xs.length)];
+    const say = (text: string) => (caption.textContent = text);
+
+    function makeOp(staff: StaffId): { kind: Kind; amount: number; product: string } {
+      const product = pick(rt.products);
+      const qty = 1 + Math.floor(Math.random() * 2);
+      // Only the pharmacist issues returns and receives stock (PermissionEngine).
+      if (staff === 'pharmacist') {
+        const r = Math.random();
+        // A return only refunds what this device already sold, so no total
+        // ever goes negative.
+        if (r < 0.18 && totals.pharmacist >= product.price)
+          return { kind: 'ret', amount: -product.price, product: product.name };
+        if (r < 0.32) return { kind: 'stock', amount: 0, product: product.name };
+      }
+      return { kind: 'sale', amount: product.price * qty, product: product.name };
+    }
+
+    function land(staff: StaffId, op: { kind: Kind; amount: number; product: string }) {
+      if (op.kind !== 'stock') {
+        totals[staff] += op.amount;
+        total += op.amount;
+      }
+      if (op.kind === 'sale') invoices += 1;
+      renderAdmin();
+      bump(q('[data-nw-total]'));
+      pushFeed(op.kind, staff, op.amount, op.product);
+    }
+
+    async function send(staff: StaffId, op: { kind: Kind; amount: number; product: string }, id: number, ms = 2200) {
+      const label = op.kind === 'stock' ? rt.packets.stock : `${rt.packets[op.kind]} ${fmt.format(Math.abs(op.amount))}`;
+      paths.hub.classList.add('is-active');
+      const ok = await fly(label, `nw-packet--${op.kind}`, [
+        { key: staff, up: true },
+        { key: 'hub', up: true },
+      ], ms, id);
+      if (!ok) return false;
+      pop('admin');
+      land(staff, op);
+      return true;
+    }
+
+    async function operate(staff: StaffId, id: number) {
+      const op = makeOp(staff);
+      node(staff).classList.add('is-busy');
+      setActivity(staff, `${rt.feed[op.kind]} · ${op.product}`);
+      if (!(await sleep(500, id))) return false;
+      node(staff).classList.remove('is-busy');
+      if (node(staff).classList.contains('is-offline')) {
+        queue.push(op);
+        setQueue(queue.length);
+        return true;
+      }
+      // Fire and forget so several packets can be in the air at once.
+      void send(staff, op, id);
+      return true;
+    }
+
+    // ---------- the story ----------
+    async function story(id: number) {
+      reset();
+      // 1. The admin links each device with a role-bound join code.
+      for (const s of rt.staff) {
+        say(rt.steps.join.replace('{role}', s.role));
+        pop('admin');
+        const ok = await fly(`${rt.packets.join} · ${s.role}`, 'nw-packet--join', [
+          { key: 'hub', up: false },
+          { key: s.id, up: false },
+        ], 1800, id);
+        if (!ok) return;
+        setStaff(s.id, 'linked');
+        pop(s.id);
+        online += 1;
+        renderAdmin();
+        if (!(await sleep(450, id))) return;
+      }
+      paths.hub.classList.add('is-active');
+
+      // 2. Live traffic, with one offline/online cycle on the Windows counter.
+      say(rt.steps.live);
+      let round = 0;
+      while (id === run) {
+        round += 1;
+        const staff = pick(staffIds);
+        if (!(await operate(staff, id))) return;
+        if (!(await sleep(700 + Math.random() * 600, id))) return;
+
+        if (round % 14 === 6) {
+          say(rt.steps.offline);
+          setStaff('desk', 'offline');
+          online -= 1;
+          renderAdmin();
+          for (let i = 0; i < 3; i++) {
+            if (!(await operate('desk', id))) return;
+            if (!(await sleep(900, id))) return;
+          }
+          if (!(await sleep(800, id))) return;
+          say(rt.steps.back);
+          setStaff('desk', 'linked');
+          online += 1;
+          renderAdmin();
+          while (queue.length) {
+            const op = queue.shift()!;
+            setQueue(queue.length);
+            void send('desk', op, id, 1600);
+            if (!(await sleep(380, id))) return;
+          }
+          if (!(await sleep(1800, id))) return;
+          say(rt.steps.live);
+        }
+        if (round % 14 === 12) say(rt.steps.still);
+        if (round % 14 === 0) say(rt.steps.live);
+      }
+    }
+
+    function start() {
+      run += 1;
+      void story(run);
+    }
+
+    // ---------- interaction ----------
+    function select(id: NodeId) {
+      for (const n of section.querySelectorAll<HTMLElement>('[data-nw-node]')) {
+        const on = n.dataset.nwNode === id;
+        n.classList.toggle('is-selected', on);
+        n.setAttribute('aria-pressed', String(on));
+      }
+      for (const [key, p] of Object.entries(paths)) {
+        p.classList.toggle('is-selected', key === id || (id === 'admin' && key === 'hub') || (id === 'hub'));
+      }
+      const d = rt.details[id];
+      q<HTMLElement>('[data-nw-detail-title]').textContent = d.title;
+      q<HTMLElement>('[data-nw-detail-body]').textContent = d.body;
+      const list = q<HTMLElement>('[data-nw-detail-items]');
+      list.replaceChildren(
+        ...d.items.map((item) => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          return li;
+        }),
+      );
+    }
+    for (const n of section.querySelectorAll<HTMLElement>('[data-nw-node]')) {
+      n.addEventListener('click', () => select(n.dataset.nwNode as NodeId));
+    }
+
+    const toggle = q<HTMLButtonElement>('[data-nw-toggle]');
+    function renderToggle() {
+      q('[data-nw-toggle-label]').textContent = userPaused ? rt.controls.play : rt.controls.pause;
+      q('[data-nw-icon-pause]').classList.toggle('hidden', userPaused);
+      q('[data-nw-icon-play]').classList.toggle('hidden', !userPaused);
+    }
+    toggle.addEventListener('click', () => {
+      userPaused = !userPaused;
+      renderToggle();
+    });
+    q('[data-nw-replay]').addEventListener('click', () => {
+      userPaused = false;
+      renderToggle();
+      start();
+    });
+
+    // ---------- reduced motion: the finished picture, no movement ----------
+    if (reduced) {
+      q<HTMLElement>('[data-nw-controls]').hidden = true;
+      for (const s of staffIds) setStaff(s, 'linked');
+      paths.hub.classList.add('is-active');
+      online = staffIds.length;
+      const sample: Record<StaffId, number> = { pharmacist: 86500, cashier: 124000, desk: 97500 };
+      for (const s of staffIds) totals[s] = sample[s];
+      total = sample.pharmacist + sample.cashier + sample.desk;
+      invoices = 27;
+      renderAdmin();
+      pushFeed('sale', 'desk', 12000, rt.products[0].name);
+      pushFeed('ret', 'pharmacist', -2500, rt.products[1].name);
+      pushFeed('sale', 'cashier', 7500, rt.products[2].name);
+      say(rt.steps.still);
+      return;
+    }
+
+    // Start when the stage is on screen; pause (not restart) when it leaves.
+    let started = false;
+    new IntersectionObserver(
+      (entries) => {
+        inView = entries.some((e) => e.isIntersecting);
+        if (inView && !started) {
+          started = true;
+          start();
+        }
+      },
+      { threshold: 0.25 },
+    ).observe(stage);
+  }
+
+  for (const section of document.querySelectorAll<HTMLElement>('section.nw')) init(section);
+</script>

@@ -1,0 +1,94 @@
+---
+import Icon from '../ui/Icon.astro';
+import { getTranslations, languages, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+  class?: string;
+}
+
+const { lang, class: className = '' } = Astro.props;
+const t = getTranslations(lang);
+const base = import.meta.env.BASE_URL;
+const options: { lang: Lang; href: string }[] = [
+  { lang: 'ar', href: base },
+  { lang: 'en', href: `${base}en/` },
+];
+---
+
+<div class={`relative ${className}`} data-lang-switcher>
+  <button
+    type="button"
+    data-lang-toggle
+    aria-haspopup="true"
+    aria-expanded="false"
+    aria-label={t.header.langSwitcherLabel}
+    class="inline-flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 transition-colors hover:border-primary-300 hover:text-primary-700"
+  >
+    <Icon name="globe" class="h-4 w-4 text-primary-600" />
+    <span>{languages[lang].label}</span>
+    <Icon name="arrow-down" class="h-3.5 w-3.5 transition-transform" />
+  </button>
+
+  <div
+    data-lang-menu
+    role="listbox"
+    aria-label="Language"
+    class="absolute start-0 top-full z-50 mt-2 hidden min-w-[9.5rem] overflow-hidden rounded-xl border border-slate-200 bg-white p-1 shadow-lg shadow-slate-200/60"
+  >
+    {options.map((option) => (
+      <a
+        href={option.href}
+        data-lang-link
+        role="option"
+        aria-selected={option.lang === lang}
+        class={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+          option.lang === lang ? 'bg-primary-50 text-primary-700' : 'text-slate-700 hover:bg-slate-50'
+        }`}
+      >
+        {languages[option.lang].label}
+        {option.lang === lang && (
+          <Icon name="check" class="h-4 w-4 text-primary-600" aria-hidden="true" />
+        )}
+      </a>
+    ))}
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var switchers = Array.prototype.slice.call(document.querySelectorAll('[data-lang-switcher]'));
+    switchers.forEach(function (switcher) {
+      var toggle = switcher.querySelector('[data-lang-toggle]');
+      var menu = switcher.querySelector('[data-lang-menu]');
+      if (!toggle || !menu) return;
+
+      var setOpen = function (open) {
+        menu.classList.toggle('hidden', !open);
+        toggle.setAttribute('aria-expanded', String(open));
+      };
+
+      toggle.addEventListener('click', function (event) {
+        event.stopPropagation();
+        setOpen(menu.classList.contains('hidden'));
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!switcher.contains(event.target)) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') setOpen(false);
+      });
+
+      switcher.querySelectorAll('[data-lang-link]').forEach(function (link) {
+        link.addEventListener('click', function () {
+          var href = link.getAttribute('href');
+          if (window.location.hash && href.indexOf('#') === -1) {
+            link.href = href + window.location.hash;
+          }
+        });
+      });
+    });
+  })();
+</script>

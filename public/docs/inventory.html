@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — إدارة المخزون</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav a { text-decoration: none; color: var(--text-secondary); padding: 8px 12px; background: var(--bg); border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .nav a:hover { background: var(--primary); color: white; }
+    .nav a.active { background: var(--primary-dark); color: white; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    section { margin-bottom: 28px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .feature-card { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); }
+    .feature-card h4 { color: var(--primary-dark); margin-bottom: 8px; }
+    .feature-card.green { background: #ecfdf5; border-color: #6ee7b7; }
+    .feature-card.yellow { background: #fefce8; border-color: #fde68a; }
+    .feature-card.orange { background: #fff7ed; border-color: #fed7aa; }
+    .feature-card.red { background: #fef2f2; border-color: #fca5a5; }
+    .tab-indicator { display: flex; gap: 8px; margin: 12px 0; }
+    .tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; font-weight: 500; }
+    .tab.green { background: #ecfdf5; border: 1px solid #6ee7b7; }
+    .tab.yellow { background: #fefce8; border: 1px solid #fde68a; }
+    .tab.orange { background: #fff7ed; border: 1px solid #fed7aa; }
+    .tab.red { background: #fef2f2; border: 1px solid #fca5a5; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📦 إدارة المخزون</h1>
+      <p>لمحة سريعة عن حالة الأدوية وإدارة الإمدادات</p>
+    </header>
+    <nav class="nav">
+      <a href="../">🌐 الموقع الرئيسي</a>
+      <a href="index.html">🏠 البداية</a>
+      <a href="login.html">🔐 تسجيل الدخول</a>
+      <a href="pos.html">🛍️ شاشة البيع</a>
+      <a href="inventory.html" class="active">📦 المخزون</a>
+      <a href="returns.html">🔄 الإرجاع</a>
+      <a href="reports.html">📊 التقارير</a>
+    </nav>
+    <main>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;"><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/inventory-all.png" alt="حالة المخزون: تبويب الكل" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">حالة المخزون: تبويب الكل</figcaption></figure><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/inventory-expiring.png" alt="تبويب قريب الانتهاء بدرجات التنبيه" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">تبويب قريب الانتهاء بدرجات التنبيه</figcaption></figure><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/inventory-low.png" alt="تبويب المخزون المنخفض" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">تبويب المخزون المنخفض</figcaption></figure></div>
+      <a href="index.html" class="back-link">← العودة للقائمة الرئيسية</a>
+
+      <section id="inventory-overview">
+        <h2>نظرة عامة على إدارة المخزون</h2>
+        <p>إدارة المخزون هي المسؤولة عن تتبع جميع المنتجات، الدفعات، الأسعار، وتتبع انتهاء الصلاحية. المتاحة للصيدلاني والأدمن فقط.</p>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          <strong>من هم ذوو الصلاحية؟</strong> الصيدلاني والأدمن فقط — الكاشير لا يمكنه الوصول لهذه الشاشة.
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          <strong>المدخل:</strong> من لوحة التحكم الرئيسية، اضغط أيقونة "المخزون" (📦).
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          <strong>العرض:</strong> أربعة تبويبات: الكل، منخفض، قريب الانتهاء، منتهٍ.
+        </div>
+      </section>
+
+      <section id="tabs">
+        <h2>التبويبات الأربعة للحالة</h2>
+        <p>عند فتح شاشة المخزون، سترى أربعة تبويبات في الأسفل. كل تبويب يعرض جزءاً محدداً من المنتجات:</p>
+
+        <div class="tab-indicator">
+          <div class="tab green">🟢 الكل</div>
+          <div class="tab yellow">🟡 منخفض</div>
+          <div class="tab orange">🟠 قريب الانتهاء</div>
+          <div class="tab red">🔴 منتهٍ</div>
+        </div>
+
+        <div class="feature-card green">
+          <h4>🟢 تبويب "الكل" — جميع المنتجات</h4>
+          <p>يعرض قائمة بجميع المنتجات المسجلة في النظام. كل بطاقة منتج لديها:</p>
+          <ul>
+            <li>اسم المنتج الرئيسي</li>
+            <li>الكمية المتاحة الحالية</li>
+            <li>حالة ملونة (بحسب أسوأ حالة واردة: منتهٍ > عاجل > متوسط > خفيف > سليم)</li>
+            <li>رمز حالة مميز (أيقونة دائرة ملونة بجانب الاسم)</li>
+          </ul>
+          <p style="margin-top: 8px;"><strong>في كل بطاقة:</strong></p>
+          <ul>
+            <li>🟢 أخضر = سليم تماماً</li>
+            <li>🟡 أصفر فاتح = تنبيه معتدل (≤90 يوم)</li>
+            <li>🟠 برتقالي = تنبيه متوسط (≤60 يوم)</li>
+            <li>🔴 أحمر = تنبيه عاجل (≤30 يوم) أو منتهٍ</li>
+          </ul>
+        </div>
+
+        <div class="feature-card yellow">
+          <h4>🟡 تبويب "منخفض" — المخزون منخفض</h4>
+          <p>يعرض فقط المنتجات التي وصلت إلى حدّ المخزون المنخفض. هذه هي المنتجات التي تحتاج إعادة تعبئة قريباً.</p>
+          <p><strong>الحقول في كل بطاقة:</strong></p>
+          <ul>
+            <li>اسم المنتج</li>
+            <li>الكمية الحالية المتبقية</li>
+            <li>زر لفتح تفاصيل المنتج</li>
+          </ul>
+        </div>
+
+        <div class="feature-card orange">
+          <h4>🟠 تبويب "قريب الانتهاء" — التنبيهات</h4>
+          <p>يعرض المنتجات التي قربت من انتهاء الصلاحية (حسب درجة الخطورة). مفرز حسب:</p>
+          <ul>
+            <li>🟡 أولاً: خفيف (≤90 يوم)</li>
+            <li>🟠 ثانياً: متوسط (≤60 يوم)</li>
+            <li>🔴 ثالثاً: عاجل (≤30 يوم)</li>
+          </ul>
+          <p>إذا كان للمنتج أكثر من دفعة بدرجات مختلفة، تُعرض "أعلى درجة" (الأكثر خطورة).</p>
+        </div>
+
+        <div class="feature-card red">
+          <h4>🔴 تبويب "منتهٍ" — للاستبعاد</h4>
+          <p>يعرض المنتجات التي انتهت صلاحيتها بالكامل — لا يمكن بيعها ولا يتم بيعها أبداً.</p>
+          <p><strong>هذه الدفعة تحتاج:</strong></p>
+          <ul>
+            <li>إتلاف (destruction) مناسب</li>
+            <li>انتظار معالجة من قِبل الموظف المسؤول</li>
+            <li>إبلاغ المورد إن أمكن استبدالها</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="search-inventory">
+        <h2>البحث عن منتج في المخزون</h2>
+        <p>للبحث عن منتج محدد داخل المخزون:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          في أي تبويب، اكتب في خانة البحث (أعلاه اليمنى)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          يمكنك البحث بـ: الاسم، الاسم العلمي، GTIN الباركود، المادة الفعالة، المجموعة العلاجية
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          النتائج تظهر فوراً مع تصفيتها داخل التبويب الحالي
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          إذا لم تجد نتائج، حاول بحثاً أوسع (جزء من الاسم كافٍ)
+        </div>
+
+        <div class="note-box">
+          عندما تكون في وضع البحث، تبويبات "فارغة" لا تعني "لا يوجد" — تعني "لا يوجد مطابق للبحث في هذا التصنيف".
+        </div>
+      </section>
+
+      <section id="product-detail">
+        <h2>تفاصيل المنتج</h2>
+        <p>اضغط على أي بطاقة منتج (في أي تبويب) لفتح تفاصيله الكاملة:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          تعرض لك شاشة "تفاصيل المنتج" بكل المعلومات:
+          <ul>
+            <li>اسم المنتج والاسم العلمي</li>
+            <li>الوحدة (حبة، علبة، زجاجة...)</li>
+            <li>الفئة</li>
+            <li>هل يحتاج وصفة طبية؟</li>
+            <li>المصنع، المورد</li>
+            <li>التركيز (إن وجد)</li>
+            <li>الرف: رقم ، الخانة</li>
+          </ul>
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          في الأسفل: أزرار الإجراءات المتاحة
+        </div>
+
+        <div class="step">
+          <span class="step-number">3</span>
+          <strong>تعديل السعر:</strong> زر "تعديل سعر الوحدة" (للصيدلاني/الأدمن فقط). يفتح شاشة تعديل السعر الحالية.
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          <strong>سجل تغييرات السعر:</strong> يظهر في الأسفل كل تغيير تم مع التاريخ والفرق بين السعر القديم والجديد.
+        </div>
+
+        <div class="note-box">
+          سجل التغييرات هو سجل تدقيق كامل — لا يمكن حذفه أو تعديله. كل تغيير يبقى محفوظاً.
+        </div>
+      </section>
+
+      <section id="add-product">
+        <h2>إضافة منتج جديد</h2>
+        <p>طريقة 1: يدوي — للصيدلاني</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اضغط "منتج جديد" أو من شاشة المخزون
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          إذا كان المنتج له باركود، امسحه أولاً — ستظهر البيانات من قبل
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          املأ البيانات الإلزامية (اسم، وحدة) والاختيارية (اسم علمي، تركيز، وغيرها)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          حفظ المنتج
+        </div>
+
+        <p>طريقة 2: الإدخال الذكي بالجملة — للفواتير الواردة</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اضغط "إدخال جماعي ذكي" (أيقونة 📋)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          التقط صورة للفاتورة الإلكترونية أو احمل ملف Excel/CSV
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          النظام يحلل الصورة / الملف ويقدم لك قائمة الصفوف المستخرجة
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          راجع الصفوف وصححها إن لزم
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          اضغط "اعتماد الكل" — النظام ينشئ المنتجات ويدخلها كمخزون
+        </div>
+
+        <div class="tip">
+          <strong>نصيحة:</strong> الإدخال الذكي مفيد جداً عند استقبال شحنة كبيرة — يوفر وقتاً طويلاً مقارنةً بالادخال اليدوي.
+        </div>
+
+        <p>طريقة 3: البحث في مكتبة الأدوية المرجعية</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          عند إضافة منتج جديد، ابحث في مكتبة الأدوية (إذا كانت متاحة)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          المكتبة تحتوي على أسماء تجارية، أسماء علمية، التركيز، المجموعة العلاجية
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          يمكنك البحث بـ: الاسم التجاري، الاسم العلمي، المادة الفعالة
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          اختار الدواء من المكتبة — النظام ينسخ البيانات الأساسية ويضيف مساحة فارغة للبيانات المحلية
+        </div>
+      </section>
+
+      <section id="manage-prices">
+        <h2>إدارة أسعار المنتجات</h2>
+        <p>كل منتج يمكن أن يكون له ثلاثة أنواع من الأسعار:</p>
+        <ul>
+          <li><strong>سعر التجزئة (Retail):</strong> السعر للعميل النهائي</li>
+          <li><strong>سعر الجملة (Wholesale):</strong> السعر للبائع أو المركب</li>
+          <li><strong>سعر التأمين (Insurance):</strong> السعر للتأمين الصحي</li>
+        </ul>
+
+        <h3>تغير سعر المنتج</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          افتح تفاصيل المنتج من شاشة المخزون
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اضغط "تعديل سعر الوحدة"
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر نوع السعر المطلوب تعديله (تجزئة / جملة / تأمين)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          اكتب السعر الجديد واضغط "تحديث"
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          السعر القديم والجديد وتاريخ التغيير يظهران في سجل تغييرات السعر
+        </div>
+
+        <div class="warning-box">
+          تغيير السعر يطبق فوراً على جميع النشاطات اللاحقة — الفواتير القديمة تبقى كما كانت (السعر كان مختلفاً حينها).
+        </div>
+      </section>
+
+      <section id="manage-batches">
+        <h2>إدارة دفعات المنتجات</h2>
+        <p>المنتج الواحد يمكن أن يكون له عدة دفعات (Batches) بأسعار وتواريخ انتهاء مختلفة:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          افتح تفاصيل المنتج
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          انقر على "إضافة دفعة جديدة" لاستقبال دفعة جديدة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          املأ: رقم الدفعة (يولّده النظام غالباً)، تاريخ الاستلام، تاريخ الانتهاء، الكمية, سعر التكلفة
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          اختر مستودع (إن وجد أكثر من واحد)
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          حفظ الدفعة
+        </div>
+
+        <p>مثال: دواء "باراسيتامول 500مغ" يمكن أن يكون له:</p>
+        <ul>
+          <li>دفعة A: 100 حبة، انتهاء في 2027-03-15، تكلفة 500 د.ع</li>
+          <li>دفعة B: 50 حبة، انتهاء في 2026-12-01، تكلفة 450 د.ع</li>
+        </ul>
+
+        <div class="tip">
+          <strong>FEFO:</strong> عند البيع، يختار النظام أقدم دفعة (الأقرب لانتهاء) أولاً تلقائياً. هذا يضمن عدم بيع منتج منتهي.
+        </div>
+      </section>
+
+      <section id="re-stocking">
+        <h2>إعادة تعبئة المخزون (Re-stock)</h2>
+        <p>عندما يصبح المنتج منخفضاً، قم بإعادة تعبئته:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          من تبويب "منخفض" أو "الكل"، اضغط على المنتج
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اضغط "إضافة مخزون" (زر الإضافة)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر الدفعة المراد تعبئتها (أو أنشئ دفعة جديدة)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          اكتب الكمية المضافة
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          اضغط "تأكيد" — الكمية تُضاف للدفعة فوراً
+        </div>
+
+        <div class="note-box">
+          إضافة مخزون لا تؤثر على أسعار البيع — فقط الكمية المتاحة تزيد.
+        </div>
+      </section>
+
+      <section id="barcode-labels">
+        <h2>توليد ملصقات الباركود</h2>
+        <p>لمنتجات بدون باركود أو لتوليد ملصقات جديدة:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          من لوحة التحكم، اضغط "مولّد ملصقات الباركود" (📱)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اختر المنتجات التي تريد طباعة ملصقات لها
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اختر نوع الملصق: EAN-13 (مستطيل) أو QR Code
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          اختر المقاس (حجم الورقة والملصق)
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          اضغط "توليد" — يظهر ملف PDF جاهز للطباعة أو المشاركة
+        </div>
+        <div class="step">
+          <span class="step-number">6</span>
+          اضغط "مشاركة" لفتح معرض الصور أو "طباعة" للطباعة المباشرة
+        </div>
+
+        <div class="note-box">
+          النظام يولّد ملف PDF للمشاركة أو الطباعة عبر نظام التشغيل — لا يدعم توصيل طابعة مباشرة (قيود مقصودة).
+        </div>
+
+        <div class="tip">
+          <strong>كود GTIN محلي:</strong> إذا المنتج بدون باركود، النظام يمكنه توليد كود GTIN محلي صحيح (رقم تحقق تلقائي) وطباعته على ملصق.
+        </div>
+      </section>
+
+      <section id="notifications">
+        <h2>إشعارات المخزون</h2>
+        <p>الإشعارات تظهر في شريط التطبيق وعند فتح لوحة التحكم:</p>
+
+        <div class="feature-card yellow">
+          <h4>⚠️ إشعار مخزون منخفض</h4>
+          <p>يظهر عند وصول منتج لمستوى منخفض جداً. تحذرك قبل نفاد المخزون بالكامل.</p>
+        </div>
+        <div class="feature-card orange">
+          <h4>⚠️ إشعار قرب الانتهاء</h4>
+          <p>يظهر عند وصول دفعة لمرحلة قريبة من الانتهاء (≤90 يوم). يعطيك وقتاً لاتخاذ الإجراء قبل انتهاء الصلاحية.</p>
+        </div>
+        <div class="feature-card red">
+          <h4>🚫 إشعار منتهٍ</h4>
+          <p>يظهر عند انتهاء دفعة — يجب اتخاذ إجراء فوري (إتلاف أو استبدال).</p>
+        </div>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          اضغط على أيقونة الإشعارات في الأعلى لرؤية كل الإشعارات
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          الإشعارات تظهر مع جهة المصدر (من أي منتج)
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط على الإشعار لفتح المنتج مباشرة
+        </div>
+
+        <div class="note-box">
+          الإشعارات تُعرَف كـ "مُشاهَد" عندما تفحصها — لن تظهر مجدداً كغير مقروءة.
+        </div>
+      </section>
+
+      <div class="tip" style="margin-top: 20px;">
+        <strong>نصيحة صيدلانية:</strong> راجع تبويب "قريب الانتهاء" أسبوعياً — يمنع تراكم الأدوية المنتهية ويساعدك على تخطيط إمداداتك.
+      </div>
+    </main>
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+    </footer>
+  </div>
+</body>
+</html>

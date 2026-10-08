@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — البداية</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    section { margin-bottom: 24px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 16px 0; }
+    .card { background: var(--bg); padding: 16px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: all 0.15s; text-decoration: none; color: var(--text); }
+    .card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15); transform: translateY(-2px); }
+    .card h3 { color: var(--primary-dark); margin-bottom: 8px; font-size: 1.05rem; }
+    .card p { font-size: 0.9rem; }
+    .card-icon { font-size: 2rem; margin-bottom: 8px; }
+    .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; }
+    .quick-action { background: var(--bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
+    .quick-action .icon { font-size: 1.5rem; margin-bottom: 4px; }
+    .quick-action .label { font-size: 0.9rem; color: var(--text-secondary); }
+    .quick-action.highlight { border-color: var(--primary); background: #ecfdf5; }
+    .quick-action.highlight .label { color: var(--primary-dark); font-weight: 500; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>💊 دليل الصيدلية الشامل</h1>
+      <p>دليل خطوة بخطوة لاستخدام نظام إدارة الصيدلية المحمول</p>
+      <p><a href="../" style="color:inherit">🌐 العودة إلى الموقع الرئيسي</a></p>
+    </header>
+
+    <main>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;"><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/dashboard.png" alt="لوحة التحكم الرئيسية" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">لوحة التحكم الرئيسية</figcaption></figure></div>
+      <!-- مقدمة سريعة -->
+      <section id="intro">
+        <h2>مرحباً بك في نظام صيدلية PharmFlow</h2>
+        <p>هذا الدليل مُوجّه للعاملين في الصيدلية — من الكاشير إلى الصيدلاني وحتى الأدمن. يشرح كيفية استخدام كل ميزة في النظام خطوة بخطوة.</p>
+
+        <div class="quick-actions">
+          <div class="quick-action highlight">
+            <div class="icon">🛒</div>
+            <div class="label">تشغيل نقطة البيع</div>
+          </div>
+          <div class="quick-action">
+            <div class="icon">📦</div>
+            <div class="label">مراجعة المخزون</div>
+          </div>
+          <div class="quick-action">
+            <div class="icon">🔄</div>
+            <div class="label">معالجة إرجاع</div>
+          </div>
+          <div class="quick-action">
+            <div class="icon">📊</div>
+            <div class="label">تقارير يومية</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- سير العمل اليومي -->
+      <section id="daily-flow">
+        <h2>سير العمل اليومي في الصيدلية</h2>
+        <p>فهم الإطار العام لعمليات الصيدلية يساعدك على استخدام النظام بكفاءة:</p>
+
+        <div class="card-grid">
+          <div class="card" onclick="document.getElementById('pos-guide').scrollIntoView({behavior:'smooth'})">
+            <div class="card-icon">🛒</div>
+            <h3>شاشة البيع (POS)</h3>
+            <p>إتمام عمليات البيع للعملاء — مسح الباركود، إضافة السلة، والدفع</p>
+          </div>
+          <div class="card" onclick="document.getElementById('inventory-guide').scrollIntoView({behavior:'smooth'})">
+            <div class="card-icon">📦</div>
+            <h3>المخزون</h3>
+            <p>إدارة المنتجات، الأسعار، الدفعات، وتتبع انتهاء الصلاحية</p>
+          </div>
+          <div class="card" onclick="document.getElementById('returns-guide').scrollIntoView({behavior:'smooth'})">
+            <div class="card-icon">🔄</div>
+            <h3>الإرجاع</h3>
+            <p>معالجة إرجاع العملاء للمنتجات المباعة أو المعيبة</p>
+          </div>
+          <div class="card" onclick="document.getElementById('reports-guide').scrollIntoView({behavior:'smooth'})">
+            <div class="card-icon">📊</div>
+            <h3>التقارير</h3>
+            <p>مراجعة مبيعات اليوم، والإعدادات، وإلغاء الفواتير</p>
+          </div>
+          <div class="card" onclick="document.getElementById('login-guide').scrollIntoView({behavior:'smooth'})">
+            <div class="card-icon">🔐</div>
+            <h3>تسجيل الدخول</h3>
+            <p>بدء العمل اليومي — الدخول للحساب واختيار الفرع</p>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <h3>إعدادات الصيدلية</h3>
+            <p>إعداد اسم الصيدلية, الشعار, رقم الترخيص وبيانات أخرى</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- الأدوار والصلاحيات -->
+      <section id="roles">
+        <h2>الأدوار والصلاحيات في النظام</h2>
+        <p>فهم دورك يساعدك على معرفة ما يمكنك وما لا يمكنك فعله:</p>
+
+        <div class="warning-box">
+          <strong>ملاحظة هامة:</strong> الصلاحيات محددة مسبقاً ولا يمكن تغييرها من قبل المستخدم العادي. للاستفسارات حول الصلاحيات, تحدث مع المسؤول (الأدمن).
+        </div>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>💊 الكاشير</h3>
+            <p>&nbsp;</p>
+            <ul>
+              <li>نقطة البيع (POS)</li>
+              <li>إتمام عمليات البيع</li>
+              <li>الخيارات الأساسية للدفع (نقد, بطاقة)</li>
+              <li>طباعة الإيصال</li>
+              <li>البحث عن منتج</li>
+              <li>تعليق السلة</li>
+            </ul>
+            <p style="margin-top: 8px; color: var(--danger);">❌ لا يمكنه: إدارة المخزون, الإرجاع, إعدادات, المستخدمين, التقارير</p>
+          </div>
+
+          <div class="card">
+            <h3>🔬 الصيدلاني</h3>
+            <p>&nbsp;</p>
+            <ul>
+              <li>كل ما يفعله الكاشير</li>
+              <li>إدارة المخزون</li>
+              <li>إضافة/تعديل المنتجات</li>
+              <li>إدارة الأسعار</li>
+              <li>معالجة الإرجاع</li>
+              <li>إدخال جماعي ذكي</li>
+              <li>ملصقات الباركود</li>
+              <li>مراجعة حالة المخزون</li>
+            </ul>
+            <p style="margin-top: 8px; color: var(--danger);">❌ لا يمكنه: إدارة المستخدمين, إعدادات الصيدلية الأساسية, إجراءات الأدمن الحساسة</p>
+          </div>
+
+          <div class="card">
+            <h3>🛡️ الأدمن</h3>
+            <p>&nbsp;</p>
+            <ul>
+              <li>كل ما يفعله الصيدلاني</li>
+              <li>إدارة جميع المستخدمين</li>
+              <li>إعداد بيانات الصيدلية</li>
+              <li>إعدادات التقارير اليومية</li>
+              <li>تفعيل/تعطيل الأجهزة</li>
+              <li>إدارة الأجهزة المسجلة</li>
+              <li>أرشيف الفواتير الكامل</li>
+              <li>مزامنة المخزون مع السحابة</li>
+              <li>إعدادات إضافية</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- نصائح عامة -->
+      <section id="general-tips">
+        <h2>نصائح عامة لاستخدام النظام بكفاءة</h2>
+
+        <div class="tip">
+          <strong>ابدأ كل يوم بتسجيل الدخول:</strong> تأكد من تسجيل الدخول بالحساب الصحيح والفرع المناسب.
+        </div>
+
+        <div class="tip">
+          <strong>استخدم الكاميرا للمسح الضوئي:</strong> لسرعة البيع، امسح باركود المنتج مباشرة — لا تحتاج لإدخال يدوي.
+        </div>
+
+        <div class="tip">
+          <strong>البحث النصي بديل مناسب:</strong> عند صعوبة المسح أو عدم وجود باركود, استخدم بحثاً نصياً عن الاسم.
+        </div>
+
+        <div class="warning-box">
+          <strong>انتبه لتواريخ الانتهاء:</strong> راجع تبويب "قريب الانتهاء" أسبوعياً — يمنع بيع أدوية منتهية.
+        </div>
+
+        <div class="tip">
+          <strong>سجل أسباب الإرجاع:</strong> عند معالجة إرجاع, اكتب سبباً واضحاً — يساعد في التحليل والتحسين.
+        </div>
+
+        <div class="note-box">
+          <strong>التقارير اليومية:</strong> على الأدمن مراجعة تقارير الإرسال اليومية للتأكد من المبيعات والاستلامات.
+        </div>
+
+        <div class="danger-box">
+          <strong>لا تبيع منتجاً منتهياً:</strong> النظام يمنع ذلك، لكن يُرجى مراجعة الدفعات بانتظام.
+        </div>
+
+        <div class="tip">
+          <strong>للتواصل مع الدعم:</strong> استخدم شاشة "تشخيص النظام" لإرسال معلومات دقيقة.
+        </div>
+      </section>
+
+      <!-- مرجع سريع -->
+      <section id="quick-reference">
+        <h2>مرجع سريع — اختصارات ومعلومات هامة</h2>
+
+        <div class="card-grid">
+          <div class="card">
+            <h3>🔐 PIN الدخول</h3>
+            <p>كلمة مرور مكونة من 4-6 أرقام. إذا نسيتها, تواصل مع المسؤول.</p>
+          </div>
+          <div class="card">
+            <h3>📱 الكاميرا</h3>
+            <p>للمسح الضوئي، تأكد من نظافة العدسة وأن الباركود مكشوف</p>
+          </div>
+          <div class="card">
+            <h3>🛒 السلة</h3>
+            <p>للعملاء المتعددين: علّق السلة (⏸️) لاستئناف لاحقاً</p>
+          </div>
+          <div class="card">
+            <h3>💰 الخصم</h3>
+            <p>الخصم اليدوي (فقط) — يظهر في الإجماليات قبل إتمام البيع</p>
+          </div>
+          <div class="card">
+            <h3>📄 الإرجاع</h3>
+            <p>يجب أن يكون المستخدم صيدلاني أو أدمن. الكمية المُرجَعة تعود للدفعة الأصلية</p>
+          </div>
+          <div class="card">
+            <h3>📧 التقارير</h3>
+            <p>تُرسل يومياً عند وقت محدد حسب الإعدادات. يجب تفعيل قناة الإرسال من الإعدادات</p>
+          </div>
+        </div>
+
+        <div class="note-box" style="margin-top: 16px;">
+          <strong>في حال وجود مشكلة:</strong> افتح شاشة تشخيص النظام ثم تواصل مع الدعم الفني مع ذكر معرّف الجهاز والمشكلة.
+        </div>
+      </section>
+
+      <!-- روابط الصفحات -->
+      <section id="navigation">
+        <h2>الصفحات المتاحة في الدليل</h2>
+        <div class="card-grid" style="text-decoration: none !important; border: none; box-shadow: none !important; background: transparent !important;">
+          <a class="card" href="login.html" style="text-decoration: none;">
+            <div class="card-icon">🔐</div>
+            <h3>تسجيل الدخول</h3>
+            <p>بدء الدخول, PIN, اختيار الفرع, الأولي</p>
+          </a>
+          <a class="card" href="pos.html" style="text-decoration: none;">
+            <div class="card-icon">🛒</div>
+            <h3>شاشة البيع (POS)</h3>
+            <p>مسح, إضافة للسلة, تعديل, دفع, إتمام</p>
+          </a>
+          <a class="card" href="inventory.html" style="text-decoration: none;">
+            <div class="card-icon">📦</div>
+            <h3>المخزون</h3>
+            <p>منتجات, أسعار, دفعات, انتهاء الصلاحية</p>
+          </a>
+          <a class="card" href="returns.html" style="text-decoration: none;">
+            <div class="card-icon">🔄</div>
+            <h3>الإرجاع</h3>
+            <p>إرجاع كامل أو جزئي, أسباب, سجل</p>
+          </a>
+          <a class="card" href="reports.html" style="text-decoration: none;">
+            <div class="card-icon">📊</div>
+            <h3>التقارير والإعدادات</h3>
+            <p>التقرير اليومي, إعدادات الإرسال, الأرشيف, لوحة التحكم</p>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+      <p>© 2026 PharmFlow — جميع الحقوق محفوظة</p>
+    </footer>
+
+    <!-- روابط الجولة -->
+    <script>
+      // تفعيل التمرير السلس
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function() {
+          const target = this.getAttribute('onclick');
+          if (target) {
+            const id = target.match(/['"]([^'"]+)['"]/)?.[1];
+            if (id) document.getElementById(id).scrollIntoView({behavior:'smooth'});
+          }
+        });
+      });
+    </script>
+  </div>
+</body>
+</html>

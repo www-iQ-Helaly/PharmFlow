@@ -1,0 +1,107 @@
+---
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+import contact from '../../data/contact.json';
+import { promo, whatsappLink } from '../../data/promo';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const footer = t.footer;
+---
+
+<footer class="border-t border-slate-200 bg-white">
+  <Container class="grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <a href="#hero" class="flex items-center gap-2.5" aria-label={footer.brandAria}>
+        <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 text-white">
+          <Icon name="plus" class="h-5 w-5 rotate-45" />
+        </span>
+        <span class="font-heading text-lg font-bold text-slate-900">Pharm<span class="text-primary-600">Flow</span></span>
+      </a>
+      <p class="mt-4 text-sm leading-relaxed text-slate-500">
+        {footer.about}
+      </p>
+      <p class="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-400">
+        {footer.note}
+      </p>
+    </div>
+
+    <nav aria-label={footer.productTitle}>
+      <h3 class="font-heading text-sm font-bold text-slate-900">{footer.productTitle}</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        {footer.productLinks.map((link) => (
+          <li>
+            <a href={link.href!} class="text-slate-600 transition-colors hover:text-primary-700">{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <nav aria-label={footer.resourcesTitle}>
+      <h3 class="font-heading text-sm font-bold text-slate-900">{footer.resourcesTitle}</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        {footer.resourceLinks.map((link) =>
+          link.href ? (
+            <li>
+              <a href={link.href} class="text-slate-600 transition-colors hover:text-primary-700">{link.label}</a>
+            </li>
+          ) : (
+            <li class="inline-flex items-center gap-2 text-slate-400">
+              {link.label}
+              <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">{footer.soon}</span>
+            </li>
+          ),
+        )}
+      </ul>
+    </nav>
+
+    <div>
+      <h3 class="font-heading text-sm font-bold text-slate-900">{footer.supportTitle}</h3>
+      <ul class="mt-4 space-y-3 text-sm">
+        {footer.supportLinks.map((link) =>
+          link.href ? (
+            <li>
+              <a href={link.href} class="text-slate-600 transition-colors hover:text-primary-700">{link.label}</a>
+            </li>
+          ) : (
+            <li class="inline-flex items-center gap-2 text-slate-400">
+              {link.label}
+              <span class="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">{footer.soon}</span>
+            </li>
+          ),
+        )}
+      </ul>
+      <ul class="mt-6 space-y-3 text-sm text-slate-600">
+        <li>
+          <a href={`mailto:${contact.email}`} class="flex items-center gap-2 transition-colors hover:text-primary-700">
+            <Icon name="mail" class="h-4 w-4 shrink-0 text-primary-600" />
+            <span dir="ltr">{contact.email}</span>
+          </a>
+        </li>
+        <li>
+          <a
+            href={whatsappLink(contact.whatsappUrl, promo[lang].whatsappText)}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-2 transition-colors hover:text-primary-700"
+          >
+            <Icon name="message-circle" class="h-4 w-4 shrink-0 text-emerald-600" />
+            <span>{promo[lang].whatsappLabel}: <span dir="ltr">{contact.phoneDisplay}</span></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </Container>
+
+  <div class="border-t border-slate-100 py-6">
+    <Container class="flex flex-col items-center justify-between gap-3 text-sm text-slate-500 sm:flex-row">
+      <p>{footer.copyright} · {promo[lang].company}</p>
+      <p class="text-xs text-slate-400">{footer.tagline}</p>
+    </Container>
+  </div>
+</footer>

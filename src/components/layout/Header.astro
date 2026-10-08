@@ -1,0 +1,110 @@
+---
+import Container from '../ui/Container.astro';
+import Icon from '../ui/Icon.astro';
+import Button from '../ui/Button.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+---
+
+<header data-header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur transition-shadow">
+  <Container class="flex h-16 items-center justify-between gap-4 lg:h-20">
+    <a href="#hero" class="flex items-center gap-2.5" aria-label={t.header.brandAria}>
+      <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary-600 text-white">
+        <Icon name="plus" class="h-5 w-5 rotate-45" />
+      </span>
+      <span class="font-heading text-lg font-bold text-slate-900">Pharm<span class="text-primary-600">Flow</span></span>
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" aria-label={t.header.navAria}>
+      {t.header.nav.map((item) => (
+        <a
+          href={item.href}
+          class="rounded-full px-4 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-primary-700"
+          >{item.label}</a
+        >
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-4 lg:flex">
+      <LanguageSwitcher lang={lang} />
+      <Button href="#cta" variant="primary" size="md">
+        <Icon name="download" class="h-4 w-4" />
+        {t.header.download}
+      </Button>
+    </div>
+
+    <button
+      type="button"
+      data-nav-toggle
+      data-open-label={t.header.openMenu}
+      data-close-label={t.header.closeMenu}
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label={t.header.openMenu}
+      class="inline-flex h-10 w-10 items-center justify-center rounded-lg text-slate-600 transition-colors hover:bg-slate-100 lg:hidden"
+    >
+      <Icon name="menu" class="h-6 w-6" />
+    </button>
+  </Container>
+
+  <div id="mobile-menu" data-nav-menu class="hidden border-t border-slate-200 bg-white lg:hidden">
+    <Container class="flex flex-col gap-1 py-4">
+      {t.header.nav.map((item) => (
+        <a
+          href={item.href}
+          class="rounded-lg px-3 py-2.5 text-base font-medium text-slate-700 transition-colors hover:bg-slate-100"
+          >{item.label}</a
+        >
+      ))}
+      <div class="mt-2 flex items-center justify-center gap-4 border-t border-slate-100 pt-4">
+        <LanguageSwitcher lang={lang} />
+      </div>
+      <a href="#cta" class="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-primary-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-700">
+        <Icon name="download" class="h-4 w-4" />
+        {t.header.download}
+      </a>
+    </Container>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    var toggle = document.querySelector('[data-nav-toggle]');
+    var menu = document.querySelector('[data-nav-menu]');
+    if (!toggle || !menu) return;
+
+    var setState = function (open) {
+      menu.classList.toggle('hidden', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute(
+        'aria-label',
+        open ? toggle.getAttribute('data-close-label') : toggle.getAttribute('data-open-label'),
+      );
+      document.body.classList.toggle('overflow-hidden', open);
+    };
+
+    toggle.addEventListener('click', function () {
+      setState(menu.classList.contains('hidden'));
+    });
+
+    menu.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setState(false);
+      });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && !menu.classList.contains('hidden')) {
+        setState(false);
+        toggle.focus();
+      }
+    });
+  })();
+</script>

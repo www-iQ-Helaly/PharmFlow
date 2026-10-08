@@ -1,0 +1,96 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+const tabs = t.gallery.tabs;
+
+const ar = lang === 'ar';
+const images: Record<string, { src: string; label: string }> = {
+  'g-pos': { src: '/screenshots/app/pos-cart.png', label: ar ? 'شاشة البيع — سلة بعدة أصناف' : 'Sales screen — multi-item cart' },
+  'g-inv': { src: '/screenshots/app/inventory-expiring.png', label: ar ? 'المخزون وتنبيهات قرب الانتهاء' : 'Inventory and near-expiry alerts' },
+  'g-barcode': { src: '/screenshots/app/barcode-labels.png', label: ar ? 'توليد ملصقات الباركود' : 'Barcode label generator' },
+  'g-trans': { src: '/screenshots/app/invoice-detail.png', label: ar ? 'تفاصيل الفاتورة' : 'Invoice details' },
+  'g-sec': { src: '/screenshots/app/pin-setup.png', label: ar ? 'الإعداد الأول ورمز PIN للمدير' : 'First-run setup and admin PIN' },
+};
+---
+
+<section id="gallery" class="scroll-mt-24 bg-white py-20 sm:py-24">
+  <Container>
+    <div data-reveal>
+      <SectionHeading
+        kicker={t.gallery.kicker}
+        title={t.gallery.title}
+        lead={t.gallery.lead}
+      />
+    </div>
+
+    <div class="mt-14" data-reveal>
+      <div role="tablist" aria-label={t.gallery.tablistAria} class="flex flex-wrap justify-center gap-2">
+        {tabs.map((tab, index) => (
+          <button
+            type="button"
+            role="tab"
+            id={`${tab.id}-tab`}
+            aria-controls={`${tab.id}-panel`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            data-gallery-tab
+            class="gallery-tab rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 transition-all hover:border-primary-300 hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+          >
+            <Icon name={tab.icon} class="h-4 w-4" />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {tabs.map((tab, index) => (
+        <div
+          id={`${tab.id}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${tab.id}-tab`}
+          data-gallery-panel
+          class={index === 0 ? 'mt-8' : 'mt-8 hidden'}
+        >
+          <div class="mx-auto max-w-xs overflow-hidden rounded-[2rem] border border-slate-200 bg-slate-100 shadow-lg">
+            <img
+              src={images[tab.id]?.src}
+              alt={images[tab.id]?.label ?? t.gallery.screenshot(tab.label)}
+              class="h-auto w-full"
+              loading="lazy"
+            />
+          </div>
+          <p class="mt-3 text-center text-sm font-semibold text-slate-700">{images[tab.id]?.label}</p>
+          <p class="mt-1 text-center text-xs text-slate-400">
+            {ar ? 'لقطة شاشة حقيقية من التطبيق (الإصدار 0.6.0)' : 'Real screenshot from the app (version 0.6.0)'}
+          </p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<script is:inline>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[data-gallery-tab]'));
+    var panels = Array.prototype.slice.call(document.querySelectorAll('[data-gallery-panel]'));
+    if (!tabs.length) return;
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = tab.getAttribute('aria-controls');
+        tabs.forEach(function (t) {
+          t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+        });
+        panels.forEach(function (panel) {
+          panel.classList.toggle('hidden', panel.id !== target);
+        });
+      });
+    });
+  })();
+</script>

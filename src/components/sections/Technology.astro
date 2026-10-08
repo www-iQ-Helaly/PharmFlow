@@ -1,0 +1,53 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import Icon from '../ui/Icon.astro';
+import { getTranslations, type Lang } from '../../i18n/translations';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getTranslations(lang);
+
+const style = [
+  { icon: 'database' as const, color: 'bg-green-100 text-green-700 border-green-200', textColor: 'text-green-700' },
+  { icon: 'lock' as const, color: 'bg-primary-100 text-primary-700 border-primary-200', textColor: 'text-primary-700' },
+  { icon: 'wifi-off' as const, color: 'bg-amber-100 text-amber-700 border-amber-200', textColor: 'text-amber-700' },
+  { icon: 'globe' as const, color: 'bg-blue-100 text-blue-700 border-blue-200', textColor: 'text-blue-700' },
+];
+const cards = t.technology.cards.map((card, i) => ({ ...card, ...style[i % style.length] }));
+---
+
+<section id="technology" class="scroll-mt-24 bg-slate-50 py-20 sm:py-24">
+  <Container>
+    <div data-reveal>
+      <SectionHeading
+        kicker={t.technology.kicker}
+        title={t.technology.title}
+        lead={t.technology.lead}
+      />
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+      {cards.map((card) => (
+        <div class="rounded-2xl border bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg">
+          <div class={`flex h-12 w-12 items-center justify-center rounded-xl border ${card.color}`}>
+            <Icon name={card.icon} class="h-6 w-6" />
+          </div>
+          <h3 class="mt-4 font-heading text-lg font-bold text-slate-900">{card.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">{card.content}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {card.items.map((item) => (
+              <span class={`inline-flex items-center gap-1 rounded px-2.5 py-1 text-xs font-medium ${card.textColor} bg-white/80 border`}>
+                <span class="h-1.5 w-1.5 rounded-full bg-current opacity-60"></span>
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
