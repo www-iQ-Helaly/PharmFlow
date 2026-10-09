@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الصيدلية — تسجيل الدخول</title>
+  <style>
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --accent: #22c55e;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+    header { background: var(--primary); color: white; padding: 24px; border-radius: 8px 8px 0 0; margin-bottom: 0; }
+    header h1 { font-size: 1.5rem; }
+    header p { opacity: 0.9; margin-top: 4px; }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .nav a { text-decoration: none; color: var(--text-secondary); padding: 8px 12px; background: var(--bg); border-radius: 6px; font-size: 0.9rem; transition: all 0.2s; }
+    .nav a:hover { background: var(--primary); color: white; }
+    .nav a.active { background: var(--primary-dark); color: white; }
+    main { background: var(--surface); padding: 24px; border-radius: 0 0 8px 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    section { margin-bottom: 28px; }
+    section h2 { color: var(--primary-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; margin-bottom: 16px; font-size: 1.2rem; }
+    section h3 { color: var(--text); margin: 16px 0 8px; font-size: 1.05rem; }
+    p { margin-bottom: 12px; color: var(--text-secondary); }
+    .step { background: var(--bg); border-left: 3px solid var(--primary); padding: 12px 16px; margin: 12px 0; border-radius: 0 8px 8px 0; }
+    .step-number { display: inline-block; background: var(--primary); color: white; width: 24px; height: 24px; line-height: 24px; text-align: center; border-radius: 50%; font-weight: bold; margin-right: 8px; }
+    .warning-box { background: #fef3c7; border: 1px solid #fcd34d; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .warning-box::before { content: "⚠️ "; font-size: 1.2rem; }
+    .danger-box { background: #fee2e2; border: 1px solid #fca5a5; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .danger-box::before { content: "🛑 "; font-size: 1.2rem; }
+    .note-box { background: #dbeafe; border: 1px solid #93c5fd; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .note-box::before { content: "💡 "; font-size: 1.2rem; }
+    .tip { background: #ecfdf5; border: 1px solid #6ee7b7; padding: 12px; border-radius: 8px; margin: 12px 0; }
+    .tip::before { content: "✅ "; font-size: 1.2rem; }
+    ul { margin: 8px 0 12px 20px; }
+    li { margin-bottom: 4px; }
+    .role-card { background: var(--bg); padding: 16px; border-radius: 8px; margin: 12px 0; border: 1px solid var(--border); }
+    .role-card h4 { color: var(--primary-dark); margin-bottom: 8px; }
+    .shortcut { display: inline-block; background: var(--text); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-family: monospace; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.85rem; }
+    .back-link { display: inline-block; margin-bottom: 16px; color: var(--primary-dark); text-decoration: none; font-weight: 500; }
+    .back-link:hover { text-decoration: underline; }
+    .pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 200px; margin: 16px auto; }
+    .pin-key { background: var(--primary-dark); color: white; border: none; padding: 16px; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: all 0.1s; }
+    .pin-key:hover { background: var(--primary); transform: scale(1.05); }
+    .pin-key:active { transform: scale(0.95); }
+    .pin-display { background: var(--bg); border: 2px solid var(--border); border-radius: 8px; padding: 12px 20px; text-align: center; font-size: 1.5rem; letter-spacing: 8px; margin-bottom: 16px; min-height: 56px; }
+    .pin-display .dot { width: 16px; height: 16px; background: var(--primary); border-radius: 50%; display: inline-block; margin: 0 6px; vertical-align: middle; }
+    .pin-display .dot.empty { background: var(--border); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔐 تسجيل الدخول</h1>
+      <p>ابدأ عملك في الصيدلية بخطوات بسيطة</p>
+    </header>
+    <nav class="nav">
+      <a href="../">🌐 الموقع الرئيسي</a>
+      <a href="index.html">🏠 البداية</a>
+      <a href="login.html" class="active">🔐 تسجيل الدخول</a>
+      <a href="pos.html">🛍️ شاشة البيع</a>
+      <a href="inventory.html">📦 المخزون</a>
+      <a href="returns.html">🔄 الإرجاع</a>
+      <a href="reports.html">📊 التقارير</a>
+    </nav>
+    <main>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0 24px;"><figure style="margin:0;text-align:center;flex:0 1 220px;"><img src="../screenshots/app/pin-setup.png" alt="شاشة الإعداد الأول وإدخال PIN" style="width:100%;height:auto;border-radius:14px;border:1px solid #d1d5db;box-shadow:0 4px 14px rgba(0,0,0,.12);" loading="lazy"><figcaption style="font-size:.8rem;color:#6b7280;margin-top:6px;">شاشة الإعداد الأول وإدخال PIN</figcaption></figure></div>
+      <a href="index.html" class="back-link">← العودة للقائمة الرئيسية</a>
+
+      <section id="login-overview">
+        <h2>نظرة عامة على تسجيل الدخول</h2>
+        <p>عند فتح التطبيق لأول مرة، ستظهر لك شاشة تسجيل الدخول. تتطلب إدخال رقم هوية (PIN) مكوّن من 4-6 أرقام للدخول إلى حسابك.</p>
+
+        <div class="role-card">
+          <h4>🎯 من يمكنه تسجيل الدخول؟</h4>
+          <p>التطبيق يدعم ثلاثة أنواع من المستخدمين، كل منها له صلاحيات مختلفة:</p>
+
+          <div class="role-card" style="background: #ecfdf5; border-color: #6ee7b7;">
+            <h4>💊 الكاشير (Cashier)</h4>
+            <p>صلاحيات محدودة: يمكنه فقط إتمام عمليات البيع. لا يمكنه إدارة المخزون، الإرجاع، أو الوصول للتقارير.</p>
+            <p style="margin-top: 8px;">الوجهة المباشرة بعد الدخول: شاشة البيع (POS) فوراً.</p>
+          </div>
+
+          <div class="role-card" style="background: #fffbeb; border-color: #fcd34d;">
+            <h4>🔬 الصيدلاني (Pharmacist)</h4>
+            <p>صلاحيات متوسطة: يمكنه البيع + إدارة المخزون + معالجة الإرجاع + ملصقات الباركود + الإدخال الجماعي للفواتير.</p>
+            <p style="margin-top: 8px;">الوجهة بعد الدخول: لوحة التحكم الرئيسية (Home Dashboard).</p>
+          </div>
+
+          <div class="role-card" style="background: #fef2f2; border-color: #fca5a5;">
+            <h4>🛡️ الأدمن (Admin)</h4>
+            <p>صلاحيات كاملة: كل ما يفعله الكاشير والصيدلاني + إعدادات الصيدلية + إدارة المستخدمين + الأجهزة + إعدادات التقارير.</p>
+            <p style="margin-top: 8px;">الوجهة بعد الدخول: لوحة التحكم الرئيسية (Home Dashboard) مع بطاقات إضافية للإدارة.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="enter-pin">
+        <h2>إدخال رقم الهوية (PIN)</h2>
+        <p>رقم الهوية هو رمز مكون من 4-6 أرقام يتم تعيينه لك من قبل المسؤول (الأدمن) عند إنشاء حسابك.</p>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          عند فتح التطبيق، ستظهر شاشة تسجيل الدخول بعنوان "أدخل رمز PIN"
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          على الشاشة زرّات رقمية من 0 إلى 9
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط الأرقام لتكوين رمز PIN الخاص بك
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          الأرقام تظهر كنقاط (•) لحماية الخصوصية
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          اضغط زر "حذف" لمسح آخر رقم مدخل
+        </div>
+        <div class="step">
+          <span class="step-number">6</span>
+          اضغط زر "مسح الكل" لمسح كل الأرقام والبدء من جديد
+        </div>
+        <div class="step">
+          <span class="step-number">7</span>
+          اضغط زر "تأكيد" (أخضر) لإرسال رمز PIN
+        </div>
+
+        <div class="pin-keypad" style="margin-top: 16px;">
+          <button class="pin-key">1</button>
+          <button class="pin-key">2</button>
+          <button class="pin-key">3</button>
+          <button class="pin-key">4</button>
+          <button class="pin-key">5</button>
+          <button class="pin-key">6</button>
+          <button class="pin-key">7</button>
+          <button class="pin-key">8</button>
+          <button class="pin-key">9</button>
+          <button class="pin-key" style="background: #64748b;">مسح الكل</button>
+          <button class="pin-key">0</button>
+          <button class="pin-key" style="background: var(--danger);">تأكيد</button>
+        </div>
+
+        <div class="note-box">
+          <strong>نصيحة:</strong> يظهر الـ PIN كنقاط مخفية أثناء الإدخال، ولن يعرض التطبيق رمز PIN الفعلي لك مرة أخرى بعد تعيينه.
+        </div>
+      </section>
+
+      <section id="pin-errors">
+        <h2>ماذا يحدث عند خطأ في PIN؟</h2>
+        <p>إذا أدخلت رمز PIN خاطئ:</p>
+
+        <div class="step">
+          <span class="step-number">1</span>
+          يظهر رسالة خطأ: "رمز PIN غير صحيح"
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          يتم احتساب محاولات الفشل المتكررة
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          بعد عدد معين من المحاولات الفاشلة المتكررة، الحساب يتم قفله مؤقتاً
+        </div>
+
+        <div class="danger-box">
+          <strong>قفل الحساب:</strong> بعد العديد من محاولات PIN الخاطئة، حسابك سيتم قفله لفترة محددة. يجب الانتظار أو التواصل مع المسؤول.
+        </div>
+
+        <div class="warning-box">
+          قد يُقفل الحساب أيضاً عن بُعد من قبل المسؤول عبر نظام المزامنة.
+        </div>
+      </section>
+
+      <section id="select-branch">
+        <h2>اختيار الفرع (للصيدليات متعددة الفروع)</h2>
+        <p>إذا كان حسابك مرتبطاً بفروع متعددة، بعد تسجيل الدخول بنجاح:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          تظهر قائمة بالفروع المرتبطة بحسابك
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          اختر الفرع الذي تريد العمل منه
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          جميع عملياتك ستكون مرتبطة بهذا الفرع
+        </div>
+
+        <div class="note-box">
+          في الصيدليات ذات فرع واحد، هذا الخيار لا يظهر — النظام يوجهك مباشرة للعمل.
+        </div>
+      </section>
+
+      <section id="logout">
+        <h2>تسجيل الخروج أو تبديل الحساب</h2>
+        <p>لتسجيل الخروج من حسابك الحالي:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          إذا كنت في لوحة التحكم، اضغط على أيقونة "تغيير الحساب" في الأعلى (أيقونة الشخصين)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          إذا كانت هناك سلة تحتوي على منتجات، يظهر تأكيد: هل تريد إلغاء السلة والخروج؟
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          اضغط "تأكيد" للخروج — السلة تُمسح وتعود لشاشة تسجيل الدخول
+        </div>
+
+        <div class="warning-box">
+          تبديل الحساب يُمسح السلة الحالية فوراً — تأكد من عدم وجود عمليات قيد التنفيذ قبل التبديل.
+        </div>
+
+        <div class="tip">
+          <strong>لصيدلية متعددة الموظفين:</strong> عند نهاية وردية الكاشير، يجب عليه التوقيع للخروج حتى لا يرث الموظف التالي سلة غير مكتملة.
+        </div>
+      </section>
+
+      <section id="first-time-setup">
+        <h2>الإعداد الأولي (للمستخدم الأول/الأدمن)</h2>
+        <p>عند أول تشغيل للتطبيق على جهاز جديد، يحتاج الأدمن إلى إعداد بيانات الصيدلية:</p>
+
+        <h3>إضافة بيانات الصيدلية</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          عند أول تشغيل، تظهر شاشة إعداد بيانات الصيدلية (Pharmacy Info Setup)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          أدخل اسم الصيدلية
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          أدخل العنوان (اختياري)
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          أدخل رقم الهاتف (سيظهر على الإيصالات)
+        </div>
+        <div class="step">
+          <span class="step-number">5</span>
+          التقط صورة الشعار أو اختر من المعرض (سيظهر على الإيصالات)
+        </div>
+        <div class="step">
+          <span class="step-number">6</span>
+          أدخل رقم ترخيص الصيدلية الرسمي (اختياري — سيظهر على الإيصالات كـ "PH-ترخيص رقم")
+        </div>
+        <div class="step">
+          <span class="step-number">7</span>
+          اضغط "حفظ" لإتمام الإعداد
+        </div>
+
+        <div class="note-box">
+          عندما تُكمل البيانات، هذه الشاشة لا تظهر مجدداً — يمكنك تعديلها عبر لوحة التحكم (إعدادات الصيدلية).
+        </div>
+
+        <h3>إنشاء حساب الأدمن الأول</h3>
+        <div class="step">
+          <span class="step-number">1</span>
+          بعد إعداد بيانات الصيدلية، يُطلب منك إنشاء حساب الأدمن الأول
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          أدخل الاسم الكامل
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          أنشئ رمز PIN مكون من 4-6 أرقام
+        </div>
+        <div class="step">
+          <span class="step-number">4</span>
+          أكِّد رمز PIN ثم اضغط "إنشاء الحساب"
+        </div>
+
+        <div class="tip">
+          الأدمن الأول هو المسؤول عن إنشاء حسابات الموظفين الآخرين (كاشير، صيدلاني).
+        </div>
+      </section>
+
+      <section id="license-check">
+        <h2>فحص الترخيص والتجربة</h2>
+        <p>عند بدء التشغيل، النظام يتحقق تلقائياً من:</p>
+        <div class="step">
+          <span class="step-number">1</span>
+          حالة الترخيص (licensed) أو التجربة (trial)
+        </div>
+        <div class="step">
+          <span class="step-number">2</span>
+          إذا كنت في وضع التجربة، تظهر معلومات عن المدة المتبقية
+        </div>
+        <div class="step">
+          <span class="step-number">3</span>
+          الترخيص يرتبط برقم فرع معين (branch UUID) ويسجل أول تشغيل
+        </div>
+
+        <div class="note-box">
+          الترخيص يُدار عبر حزمة منفصلة (licensing_core) — التوكن الموقَّع من قِبل الأدمن عبر أداة سطر الأوامر.
+        </div>
+      </section>
+
+      <div class="tip" style="margin-top: 20px;">
+        <strong>نصيحة للأدمن:</strong> قم بتغيير رمز PIN الافتراضي بعد أول تشغيل، واستخدم رموزاً صعبة التخمين وغير متكررة.
+      </div>
+    </main>
+    <footer>
+      <p>نظام صيدلية محمول — وثائق داخلية | تم التحديث: سبتمبر 2026</p>
+    </footer>
+  </div>
+</body>
+</html>
